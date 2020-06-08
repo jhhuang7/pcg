@@ -5,7 +5,7 @@ using UnityEngine;
 public class GenerateBuildings : MonoBehaviour {
     // values that the user can change
     public int Seed = 10;
-    public int numBuildings = 3;
+    public int numBuildings = 6;
 
     // textures to be placed on buildings
     public Material Window1;
@@ -21,8 +21,10 @@ public class GenerateBuildings : MonoBehaviour {
 
     // the vertices of the mesh
 	private Vector3[] verts;
+
 	// the triangles of the mesh (triplets of integer references to vertices)
 	private int[] tris;
+
 	// the number of triangles that have been created so far
 	private int ntris = 0;
 
@@ -36,28 +38,33 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Function for making desired building type based on given integer
-    void GenerateBuilding(int i) {
+    public GameObject GenerateBuilding(int i) {
         int num = Random.Range(1, i + 10);
         float chance = Random.Range(0f, 1f);
 
+        GameObject building = new GameObject("Building");
+        building.transform.position = new Vector3(0f, 0f, 0f);
+
         // Random variation in buildings based on random seed
         if (chance >= 0.16f && chance < 0.32f) {
-            BuildingOne(num);
+            BuildingOne(num, building);
         } else if (chance >= 0.32f && chance < 0.48f) {
-            BuildingTwo(num);
+            BuildingTwo(num, building);
         } else if (chance >= 0.48f && chance < 0.64f) {
-            BuildingThree(num);
+            BuildingThree(num, building);
         } else if (chance >= 0.64f && chance < 0.8f) {
-            BuildingFour(num);
+            BuildingFour(num, building);
         } else if (chance >= 0.8f && chance < 0.96f) {
-            BuildingFive(num);
+            BuildingFive(num, building);
         } else {
-            BuildingSix(num);
+            BuildingSix(num, building);
         }
+
+        return (building);
     }
 
     // Make a cross-shaped house with a cross-gable roof
-    void BuildingOne(int num) {
+    public void BuildingOne(int num, GameObject building) {
         // Define footprint
         footprint = new int[3, 3];
         for (int i = 0; i < 3; i++) {
@@ -145,6 +152,13 @@ public class GenerateBuildings : MonoBehaviour {
                         rend5.material = Wall1;
                         rend6.material = Wall1;
                     }
+
+                    block1.transform.parent = building.transform;
+                    block2.transform.parent = building.transform;
+                    block3.transform.parent = building.transform;
+                    block4.transform.parent = building.transform;
+                    block5.transform.parent = building.transform;
+                    block6.transform.parent = building.transform;
                 }
             }
         }
@@ -162,10 +176,11 @@ public class GenerateBuildings : MonoBehaviour {
         renderer.material.color = new Color(0f, 0f, Random.Range(0f, 1f));
         Texture2D texture = RoofTextureMap(num);
         renderer.material.mainTexture = texture;
+        r.transform.parent = building.transform;
     }
 
     // Make an 'L' shaped house with cross-hip roof
-    void BuildingTwo(int num) {
+    public void BuildingTwo(int num, GameObject building) {
         // Define footprint
         footprint = new int[3, 3];
         for (int i = 0; i < 3; i++) {
@@ -267,6 +282,13 @@ public class GenerateBuildings : MonoBehaviour {
                         rend5.material = Wall1;
                         rend6.material = Wall1;
                     }
+
+                    block1.transform.parent = building.transform;
+                    block2.transform.parent = building.transform;
+                    block3.transform.parent = building.transform;
+                    block4.transform.parent = building.transform;
+                    block5.transform.parent = building.transform;
+                    block6.transform.parent = building.transform;
                 }
             }
         }
@@ -284,10 +306,11 @@ public class GenerateBuildings : MonoBehaviour {
         renderer.material.color = new Color(0f, Random.Range(0f, 1f), 0f);
         Texture2D texture = RoofTextureMap(num);
         renderer.material.mainTexture = texture;
+        r.transform.parent = building.transform;
     }
 
     // Make Union College (a 'Z' shaped apartment block)
-    void BuildingThree(int num) {
+    public void BuildingThree(int num, GameObject building) {
         // Define footprint
         footprint = new int[5, 5];
         for (int i = 0; i < 5; i++) {
@@ -481,6 +504,15 @@ public class GenerateBuildings : MonoBehaviour {
                         rend7.material = Wall2;
                         rend8.material = Wall2;
                     }
+
+                    block1.transform.parent = building.transform;
+                    block2.transform.parent = building.transform;
+                    block3.transform.parent = building.transform;
+                    block4.transform.parent = building.transform;
+                    block5.transform.parent = building.transform;
+                    block6.transform.parent = building.transform;
+                    block7.transform.parent = building.transform;
+                    block8.transform.parent = building.transform;
                 }
             }
         }
@@ -499,6 +531,7 @@ public class GenerateBuildings : MonoBehaviour {
         renderer1.material.color = new Color(Random.Range(0f, 1f), 0f, 0f);
         Texture2D texture1 = RoofTextureMap(num);
         renderer1.material.mainTexture = texture1;
+        r1.transform.parent = building.transform;
 
         GameObject r2 = new GameObject("UC.2 Roof");
         r2.transform.position 
@@ -513,6 +546,7 @@ public class GenerateBuildings : MonoBehaviour {
         renderer2.material.color = new Color(0f, Random.Range(0f, 1f), 0f);
         Texture2D texture2 = RoofTextureMap(num);
         renderer2.material.mainTexture = texture2;
+        r2.transform.parent = building.transform;
 
         GameObject r3 = new GameObject("UC.3 Roof");
         r3.transform.position 
@@ -527,10 +561,11 @@ public class GenerateBuildings : MonoBehaviour {
         renderer3.material.color = new Color(0f, 0f, Random.Range(0f, 1f));
         Texture2D texture3 = RoofTextureMap(num);
         renderer3.material.mainTexture = texture3;
+        r3.transform.parent = building.transform;
     }
 
     // Make a regular bunker-style house with a triangular roof
-    void BuildingFour(int num) {
+    public void BuildingFour(int num, GameObject building) {
         // Define footprint
         footprint = new int[7, 7];
         for (int i = 0; i < 7; i++) {
@@ -604,7 +639,12 @@ public class GenerateBuildings : MonoBehaviour {
                         rend2.material = Wall1;
                         rend3.material = Wall1;
                         rend4.material = Wall1;
-                    }            
+                    }   
+
+                    block1.transform.parent = building.transform;
+                    block2.transform.parent = building.transform;
+                    block3.transform.parent = building.transform;
+                    block4.transform.parent = building.transform;         
                 }
             }
         }
@@ -623,10 +663,11 @@ public class GenerateBuildings : MonoBehaviour {
         renderer.material.color = new Color(Random.Range(0f, 1f), 0f, 0f);
         Texture2D texture = RoofTextureMap(num);
         renderer.material.mainTexture = texture;
+        r.transform.parent = building.transform;
     }   
 
     // Make a skyscraper like similar to Burj Khalifa
-    void BuildingFive(int num) {
+    public void BuildingFive(int num, GameObject building) {
         // Define footprint
         footprint = new int[5, 3];
         footprint[2, 0] = 1;
@@ -676,13 +717,15 @@ public class GenerateBuildings : MonoBehaviour {
                         Texture2D texture = RoofTextureMap(num);
                         rend.material.mainTexture = texture;
                     } 
+
+                    block.transform.parent = building.transform;
                 }
             }
         }
     }
 
     // Make a hotel like buidling similar to Marina Bay Sands
-    void BuildingSix(int num) {
+    public void BuildingSix(int num, GameObject building) {
         // Define footprint
         footprint = new int[10, 3];
         for (int i = 0; i < 10; i++) {
@@ -750,6 +793,12 @@ public class GenerateBuildings : MonoBehaviour {
                     rend3.material = Wall3;
                     rend4.material = Wall3;
                     rend5.material = Wall3;
+
+                    block1.transform.parent = building.transform;
+                    block2.transform.parent = building.transform;
+                    block3.transform.parent = building.transform;
+                    block4.transform.parent = building.transform;
+                    block5.transform.parent = building.transform;
                 }
             }
         }
@@ -765,10 +814,11 @@ public class GenerateBuildings : MonoBehaviour {
             Random.Range(0f, 1f), Random.Range(0f, 1f));
         Texture2D texture = RoofTextureMap(num);
         renderer.material.mainTexture = texture;
+        boat.transform.parent = building.transform;
     }
 
-     // Creates a cross-hip mesh
-    Mesh CreateTriangularRoof() {
+    // Creates a cross-hip mesh
+    public Mesh CreateTriangularRoof() {
         Mesh mesh = new Mesh();
         
         // vertices of the mesh
@@ -843,7 +893,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Creates a cross-hip mesh
-    Mesh CreateHipRoof() {
+    public Mesh CreateHipRoof() {
         Mesh mesh = new Mesh();
 
         // vertices of the mesh
@@ -955,7 +1005,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Creates a cross-gable mesh
-    Mesh CreateGableRoof() {
+    public Mesh CreateGableRoof() {
         Mesh mesh = new Mesh();
 
         // vertices of the mesh
@@ -1085,7 +1135,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Make a triangle from three vertex indices (clockwise order)
-	void MakeTri(int i1, int i2, int i3) {
+	public void MakeTri(int i1, int i2, int i3) {
 		// figure out the base index for storing triangle indices
 		int index = ntris * 3;
 		ntris++;
@@ -1096,13 +1146,13 @@ public class GenerateBuildings : MonoBehaviour {
 	}
 
 	// Make a quadrilateral from four vertex indices (clockwise order)
-	void MakeQuad(int i1, int i2, int i3, int i4) {
+	public void MakeQuad(int i1, int i2, int i3, int i4) {
 		MakeTri(i1, i2, i3);
 		MakeTri(i3, i2, i4);
 	}
 
     // Create a texture map to place on building roof
-	Texture2D RoofTextureMap(int num) {
+	public Texture2D RoofTextureMap(int num) {
         // dimenstions of texture
         int width = 100 * num;
         int height = 100 * num;

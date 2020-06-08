@@ -24,8 +24,10 @@ public class CreateGrid : MonoBehaviour {
 
     // the vertices of the mesh
 	private Vector3[] verts;
+
 	// the triangles of the mesh (triplets of integer references to vertices)
 	private int[] tris;
+    
 	// the number of triangles that have been created so far
 	private int ntris = 0;
 
@@ -34,6 +36,8 @@ public class CreateGrid : MonoBehaviour {
         Random.InitState(Seed);
 
         Grid = new int[Columns, Rows];
+
+        GameObject grid = new GameObject("Grid");
 
         // Rules for creating streets
         for (int i = 0; i < Columns; i++) {
@@ -50,13 +54,13 @@ public class CreateGrid : MonoBehaviour {
                     Grid[i, j] = 0;
                 }
 
-                MakeTile(i, j, Grid[i, j]);
+                MakeTile(i, j, Grid[i, j], grid);
             }
         }
     }
     
     // Generate a particular tile at a position
-    void MakeTile(int x, int y, int value) {
+    void MakeTile(int x, int y, int value, GameObject grid) {
         GameObject g = GameObject.CreatePrimitive(PrimitiveType.Plane);
         g.name = "(" + x + ", " + y + ")";
 
@@ -89,6 +93,7 @@ public class CreateGrid : MonoBehaviour {
                 m.GetComponent<MeshFilter>().mesh = my_mesh;
                 Renderer rend = m.GetComponent<Renderer>();
                 rend.material.color = new Color(0f, Random.Range(0f, 1f), 0f);
+                m.transform.parent = grid.transform;
             } 
             else if (x % 4 == 0) {
                 r.material = StreetVertical;
@@ -110,38 +115,47 @@ public class CreateGrid : MonoBehaviour {
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.25f, 0f);
                 building.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                building.transform.parent = grid.transform;
             } else if (x == 38 || (x == 40 && y == 67)) {
                 GameObject building;
                 building = (GameObject) Instantiate(Building5, 
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.34f, 0f);
                 building.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                building.transform.parent = grid.transform;
             } else if (x == 42 && y == 6) {
                 GameObject building;
                 building = (GameObject) Instantiate(Building6, 
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.77f, 0f);
                 building.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                building.transform.parent = grid.transform;
             } else if (x == Columns / 2 || y == Rows / 2) {
                 GameObject building;
                 building = (GameObject) Instantiate(Building4, 
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.6f, 0f);
                 building.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                building.transform.parent = grid.transform;
             } else if (x == Columns / 4 || y == Rows / 4) {
                 GameObject building;
                 building = (GameObject) Instantiate(Building1,
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.25f, 0f);
                 building.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                building.transform.parent = grid.transform;
             } else if (x == Columns * 0.75 || y == Rows * 0.75) {
                 GameObject building;
                 building = (GameObject) Instantiate(Building2, 
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.6f, 0f);
                 building.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                building.transform.parent = grid.transform;
             }
+            
         }
+
+        g.transform.parent = grid.transform;
     }
 
     // Creates a mesh for a 4 way intersection

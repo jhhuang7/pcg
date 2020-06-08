@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Flocking : MonoBehaviour {
-
     // Booleans that allow user to toggle the four forces individually
     public bool flock_centering = true;
     public bool velocity_matching = true;
@@ -17,6 +16,7 @@ public class Flocking : MonoBehaviour {
 
     // Flocking Objects
     public GameObject bird;
+    public GameObject bird1;
     public Material gold;
     public bool trail = true;
     
@@ -50,11 +50,22 @@ public class Flocking : MonoBehaviour {
         Random.InitState(seed);
 
         creatures = new GameObject[MaxCreatues];
+        float scale = 1f;
+
         for (int i = 0; i < MaxCreatues; i++) {
-            creatures[i] = (GameObject) Instantiate(bird);
+            float chance = Random.Range(0f, 1f);
+            if (chance >= 0.5f) {
+                creatures[i] = (GameObject) Instantiate(bird);
+                scale = 0.2f;
+            } else {
+                creatures[i] = (GameObject) Instantiate(bird1);
+                scale = 0.5f;
+            }
+
             creatures[i].transform.position = new Vector3(Random.Range(min_x, 
                 max_x), Random.Range(min_y, max_y), Random.Range(min_z, max_z));
-            creatures[i].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            creatures[i].transform.localScale 
+                = new Vector3(scale, scale, scale);
 
             var tr = creatures[i].AddComponent<TrailRenderer>();
             tr.startWidth = 0.1f;
