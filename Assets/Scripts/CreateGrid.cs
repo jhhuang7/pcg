@@ -5,7 +5,7 @@ using UnityEngine;
 public class CreateGrid : MonoBehaviour {
     // Street following grid layout
     private int[,] Grid;
-    public int Columns = 100, Rows = 200;
+    private int Columns = 100, Rows = 200;
     public int Seed = 10;
     
     // Pre-made textures to be used
@@ -13,6 +13,8 @@ public class CreateGrid : MonoBehaviour {
     public Material StreetVertical;
     public Material BuildingInner;
     public Material StreetHorizontal;
+    public Material Transparent;
+    public Material Ground;
 
     // Building Prefabs to be placed in
     public GameObject Building1;
@@ -22,13 +24,13 @@ public class CreateGrid : MonoBehaviour {
     public GameObject Building5;
     public GameObject Building6;
 
-    // the vertices of the mesh
+    // The vertices of the mesh
 	private Vector3[] verts;
 
-	// the triangles of the mesh (triplets of integer references to vertices)
+	// The triangles of the mesh (triplets of integer references to vertices)
 	private int[] tris;
     
-	// the number of triangles that have been created so far
+	// The number of triangles that have been created so far
 	private int ntris = 0;
 
     // Start is called before the first frame update
@@ -57,15 +59,36 @@ public class CreateGrid : MonoBehaviour {
                 MakeTile(i, j, Grid[i, j], grid);
             }
         }
+
+        // Make a World Box, so city is "under the dome"
+        GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        box.name = "World Box";
+        box.transform.position 
+            = new Vector3(Columns / 2 - 0.5f, 2.5f, Rows / 2 - 0.5f);
+        box.transform.localScale = new Vector3(Columns, 5f, Rows);
+        Renderer rnd = box.GetComponent<Renderer>();
+        rnd.material = Transparent;
+        box.transform.parent = grid.transform;
+
+        GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        ground.name = "Ground";
+        ground.transform.position 
+            = new Vector3(Columns / 2 - 0.5f, 0, Rows / 2 - 0.5f);
+        ground.transform.Rotate(180f, 0f, 0f);
+        ground.transform.localScale 
+            = new Vector3(Columns * 0.1f, 1f, Rows * 0.1f);
+        Renderer rend = ground.GetComponent<Renderer>();
+        rend.material = Ground;
+        ground.transform.parent = grid.transform;
     }
     
     // Generate a particular tile at a position
     void MakeTile(int x, int y, int value, GameObject grid) {
         GameObject g = GameObject.CreatePrimitive(PrimitiveType.Plane);
         g.name = "(" + x + ", " + y + ")";
-
         g.transform.position = new Vector3(x, 0, y);
         g.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        Renderer r = g.GetComponent<Renderer>();
 
         // Make appropriate rotations
         if (x % 8 == 0) {
@@ -73,8 +96,6 @@ public class CreateGrid : MonoBehaviour {
         } else if (x % 4 != 0 && y % 2 == 0) {
             g.transform.Rotate(0f, 180f, 0f);
         }
-
-        Renderer r = g.GetComponent<Renderer>();
 
         // Draw texture for tile based on whether it's street or not
         if (value == 1) {
@@ -94,8 +115,7 @@ public class CreateGrid : MonoBehaviour {
                 Renderer rend = m.GetComponent<Renderer>();
                 rend.material.color = new Color(0f, Random.Range(0f, 1f), 0f);
                 m.transform.parent = grid.transform;
-            } 
-            else if (x % 4 == 0) {
+            } else if (x % 4 == 0) {
                 r.material = StreetVertical;
             } else if (x % 4 != 0) {
                 r.material = StreetHorizontal;
