@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using cg = CreateGrid;
 
 public class GenerateBuildings : MonoBehaviour {
-    // values that the user can change
+    // Values that the user can change
     public int Seed = 10;
-    public int numBuildings = 6;
 
-    // textures to be placed on buildings
+    // Textures to be placed on buildings
     public Material Window1;
     public Material Window2;
     public Material Door1;
@@ -16,47 +16,73 @@ public class GenerateBuildings : MonoBehaviour {
     public Material Wall2;
     public Material Wall3;
 
-    // array for footprint of building
+    // Array for footprint of building
     private int[,] footprint;
 
-    // the vertices of the mesh
+    // The vertices of the mesh
 	private Vector3[] verts;
 
-	// the triangles of the mesh (triplets of integer references to vertices)
+	// The triangles of the mesh (triplets of integer references to vertices)
 	private int[] tris;
 
-	// the number of triangles that have been created so far
+	// The number of triangles that have been created so far
 	private int ntris = 0;
 
     // Start is called before the first frame update
     void Start() {
         Random.InitState(Seed);
-
-        for (int i = 1; i < numBuildings + 1; i++) {
-            GenerateBuilding(i);
+        
+        // Place buildings in city
+        for (int i = 0; i < cg.Columns; i++) {
+            for (int j = 0; j < cg.Rows; j++) {
+                if (cg.Grid[i, j] == 0 && (i == 6 || i == cg.Columns - 6) && 
+                        j % 6 == 0 && j > 6 && j + 30 < cg.Rows - 6) {
+                    GameObject building = GenerateBuilding(1);
+                    building.transform.position = new Vector3(i, 0, j + 30f);
+                    building.transform.localScale = 0.2f * new Vector3(1, 1, 1);
+                } else if (cg.Grid[i, j] == 0 && (i == 7 || i == cg.Columns - 7) 
+                        && j % 7 == 0 && j > 7 && j + 30 < cg.Rows - 7) {
+                    GameObject building = GenerateBuilding(2);
+                    building.transform.position 
+                        = new Vector3(i / 2, 0, j + 30f);
+                    building.transform.localScale = 0.2f * new Vector3(1, 1, 1);
+                } else if (cg.Grid[i, j] == 0 && 
+                        (i == 30 || i == cg.Columns - 30) && j % 10 == 0 &&
+                        j > 30 && j < cg.Rows - 30) {
+                    GameObject building = GenerateBuilding(3);
+                    building.transform.position = new Vector3(i, 0, j);
+                    building.transform.localScale = 0.1f * new Vector3(1, 1, 1);
+                }
+            }
         }
     }
 
     // Function for making desired building type based on given integer
-    public GameObject GenerateBuilding(int i) {
+    GameObject GenerateBuilding(int i) {
         int num = Random.Range(1, i + 10);
         float chance = Random.Range(0f, 1f);
 
-        GameObject building = new GameObject("Building");
+        GameObject building = new GameObject();
         building.transform.position = new Vector3(0f, 0f, 0f);
 
         // Random variation in buildings based on random seed
-        if (chance >= 0.16f && chance < 0.32f) {
+        if (i == 1) {
+            building.name = "Building 1";
             BuildingOne(num, building);
-        } else if (chance >= 0.32f && chance < 0.48f) {
+        } else if (i == 2) {
+            building.name = "Building 2";
             BuildingTwo(num, building);
-        } else if (chance >= 0.48f && chance < 0.64f) {
+        } else if (i == 3) {
+            building.name = "Building 3";
             BuildingThree(num, building);
-        } else if (chance >= 0.64f && chance < 0.8f) {
+        } else if (i == 4) {
+            building.name = "Building 4";
             BuildingFour(num, building);
-        } else if (chance >= 0.8f && chance < 0.96f) {
+        } else if (i == 5) {
+            building.name = "Building 5";
             BuildingFive(num, building);
         } else {
+            building.name = "Building 6";
             BuildingSix(num, building);
         }
 
@@ -64,7 +90,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Make a cross-shaped house with a cross-gable roof
-    public void BuildingOne(int num, GameObject building) {
+    void BuildingOne(int num, GameObject building) {
         // Define footprint
         footprint = new int[3, 3];
         for (int i = 0; i < 3; i++) {
@@ -180,7 +206,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Make an 'L' shaped house with cross-hip roof
-    public void BuildingTwo(int num, GameObject building) {
+    void BuildingTwo(int num, GameObject building) {
         // Define footprint
         footprint = new int[3, 3];
         for (int i = 0; i < 3; i++) {
@@ -310,7 +336,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Make Union College (a 'Z' shaped apartment block)
-    public void BuildingThree(int num, GameObject building) {
+    void BuildingThree(int num, GameObject building) {
         // Define footprint
         footprint = new int[5, 5];
         for (int i = 0; i < 5; i++) {
@@ -565,7 +591,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Make a regular bunker-style house with a triangular roof
-    public void BuildingFour(int num, GameObject building) {
+    void BuildingFour(int num, GameObject building) {
         // Define footprint
         footprint = new int[7, 7];
         for (int i = 0; i < 7; i++) {
@@ -667,7 +693,7 @@ public class GenerateBuildings : MonoBehaviour {
     }   
 
     // Make a skyscraper like similar to Burj Khalifa
-    public void BuildingFive(int num, GameObject building) {
+    void BuildingFive(int num, GameObject building) {
         // Define footprint
         footprint = new int[5, 3];
         footprint[2, 0] = 1;
@@ -724,8 +750,8 @@ public class GenerateBuildings : MonoBehaviour {
         }
     }
 
-    // Make a hotel like buidling similar to Marina Bay Sands
-    public void BuildingSix(int num, GameObject building) {
+    // Make a hotel like building similar to Marina Bay Sands
+    void BuildingSix(int num, GameObject building) {
         // Define footprint
         footprint = new int[10, 3];
         for (int i = 0; i < 10; i++) {
@@ -818,7 +844,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Creates a cross-hip mesh
-    public Mesh CreateTriangularRoof() {
+    Mesh CreateTriangularRoof() {
         Mesh mesh = new Mesh();
         
         // vertices of the mesh
@@ -893,7 +919,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Creates a cross-hip mesh
-    public Mesh CreateHipRoof() {
+    Mesh CreateHipRoof() {
         Mesh mesh = new Mesh();
 
         // vertices of the mesh
@@ -1005,7 +1031,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Creates a cross-gable mesh
-    public Mesh CreateGableRoof() {
+    Mesh CreateGableRoof() {
         Mesh mesh = new Mesh();
 
         // vertices of the mesh
@@ -1135,7 +1161,7 @@ public class GenerateBuildings : MonoBehaviour {
     }
 
     // Make a triangle from three vertex indices (clockwise order)
-	public void MakeTri(int i1, int i2, int i3) {
+	void MakeTri(int i1, int i2, int i3) {
 		// figure out the base index for storing triangle indices
 		int index = ntris * 3;
 		ntris++;
@@ -1146,13 +1172,13 @@ public class GenerateBuildings : MonoBehaviour {
 	}
 
 	// Make a quadrilateral from four vertex indices (clockwise order)
-	public void MakeQuad(int i1, int i2, int i3, int i4) {
+	void MakeQuad(int i1, int i2, int i3, int i4) {
 		MakeTri(i1, i2, i3);
 		MakeTri(i3, i2, i4);
 	}
 
     // Create a texture map to place on building roof
-	public Texture2D RoofTextureMap(int num) {
+	Texture2D RoofTextureMap(int num) {
         // dimenstions of texture
         int width = 100 * num;
         int height = 100 * num;

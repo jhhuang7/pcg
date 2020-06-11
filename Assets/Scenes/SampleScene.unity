@@ -141,6 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64c283c1ff9964f88bdf5d371b9e386c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Columns: 100
+  Rows: 200
   Seed: 10
   BuildingOuter: {fileID: 2100000, guid: 6b60f0fc6e43ab0148f0ea35960505db, type: 2}
   StreetVertical: {fileID: 2100000, guid: af9ebebe0738ebe1eae7d9f627c1299f, type: 2}
@@ -198,7 +200,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 152014045}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33a372eeb1384e0829ca544d26c76519, type: 3}
   m_Name: 

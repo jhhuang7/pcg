@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CreateGrid : MonoBehaviour {
     // Street following grid layout
-    private int[,] Grid;
-    private int Columns = 100, Rows = 200;
+    public static int[,] Grid;
+    public static int Columns = 100;
+    public static int Rows = 200;
     public int Seed = 10;
     
     // Pre-made textures to be used
