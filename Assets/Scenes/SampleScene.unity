@@ -141,8 +141,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64c283c1ff9964f88bdf5d371b9e386c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Columns: 100
-  Rows: 200
   Seed: 10
   BuildingOuter: {fileID: 2100000, guid: 6b60f0fc6e43ab0148f0ea35960505db, type: 2}
   StreetVertical: {fileID: 2100000, guid: af9ebebe0738ebe1eae7d9f627c1299f, type: 2}
@@ -206,7 +204,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Seed: 10
-  numBuildings: 6
   Window1: {fileID: 2100000, guid: 4422d9be5e96c5c05a12f46094b29d84, type: 2}
   Window2: {fileID: 2100000, guid: 01268d20b34566b41aa6ca851408a2d8, type: 2}
   Door1: {fileID: 2100000, guid: be923c2d86d1fb3f989809930a7d086c, type: 2}

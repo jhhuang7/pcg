@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateCreatures : MonoBehaviour {
-    // master random seed so that a user can create different creatures.
+    // Master random seed so that a user can create different creatures.
     private int Seed = 1;
 
     // Number of creatures to be generated
     public int NumCreatures = 5;
 
-    // the vertices of the mesh
+    // The vertices of the mesh
 	private static Vector3[] verts;
 
-	// the triangles of the mesh (triplets of integer references to vertices)
+	// The triangles of the mesh (triplets of integer references to vertices)
 	private static int[] tris;
 
-	// the number of triangles that have been created so far
+	// The number of triangles that have been created so far
 	private static int ntris = 0;
 
     // Start is called before the first frame update
@@ -28,7 +28,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Puts all body parts for a creature together
-    public static GameObject BuildCreature(int i) {
+    GameObject BuildCreature(int i) {
         int rand = Random.Range(i + 1, i + 10); // used for position and color
         float chance = Random.Range(0f, 1f); // Bless the RNG!
         float size = chance * rand; // for size variation
@@ -79,7 +79,7 @@ public class CreateCreatures : MonoBehaviour {
     }
     
     // Generates a head for the creature (includes skull, eyes, beak)
-    public static void MakeHead(int rand, float size, GameObject bird) {
+    void MakeHead(int rand, float size, GameObject bird) {
         // Skull
         GameObject head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         head.name = "Head";
@@ -131,7 +131,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Creates an eye in the shape of two merged spheres
-    public static void CreateEye(int rand, int side, float size, 
+    void CreateEye(int rand, int side, float size, 
             GameObject bird) {
         float shift; // determines right of left eye
         if (side == 1) {
@@ -169,7 +169,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Creates beak variation 1 in the shape of a square based pyramid
-    public static Mesh CreateBeak1() {
+    Mesh CreateBeak1() {
         Mesh mesh = new Mesh();
         
         // vertices of the mesh
@@ -223,7 +223,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Create a tetrahedron style for beak variation 2.
-	public static Mesh CreateBeak2() {
+	Mesh CreateBeak2() {
 		// create a mesh object
 		Mesh mesh = new Mesh();
 
@@ -268,7 +268,7 @@ public class CreateCreatures : MonoBehaviour {
 	}
 
     // Generates the main body/ fuslage for the creature (Capsule)
-    public static void MakeBody(int rand, float size, GameObject bird) {
+    void MakeBody(int rand, float size, GameObject bird) {
         GameObject bod = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         bod.name = "Body";
         bod.transform.position = size * 
@@ -284,7 +284,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Generates variation one of creature's arm/ wing (Rectangular prism)
-    public static void MakeArm1(int rand, int side, float size, GameObject bird) {
+    void MakeArm1(int rand, int side, float size, GameObject bird) {
         GameObject arm = GameObject.CreatePrimitive(PrimitiveType.Cube);
         arm.name = "Arm " + side;
         if (side == 1) {
@@ -308,8 +308,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Generates variation two of creature's arm/ wing (Planes)
-    public static void MakeArm2(int rand, int side, float size, 
-            GameObject bird) {
+    void MakeArm2(int rand, int side, float size, GameObject bird) {
         GameObject armt = GameObject.CreatePrimitive(PrimitiveType.Plane);
         armt.name = "Arm Top " + side;
         GameObject armb = GameObject.CreatePrimitive(PrimitiveType.Plane);
@@ -353,8 +352,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Generates variation three of creature's arm/ wing (Capsule)
-    public static void MakeArm3(int rand, int side, float size, 
-            GameObject bird) {
+    void MakeArm3(int rand, int side, float size, GameObject bird) {
         GameObject arm = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         arm.name = "Arm " + side;
         if (side == 1) {
@@ -378,8 +376,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Generates variation one of creature's leg (Capsule)
-    public static void MakeLeg1(int rand, int side, float size, 
-            GameObject bird) {
+    void MakeLeg1(int rand, int side, float size, GameObject bird) {
         GameObject leg = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         leg.name = "Leg " + side;
         leg.name = "Leg " + side;
@@ -404,8 +401,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Generates variation two of creature's leg (Rectangular Prism)
-    public static void MakeLeg2(int rand, int side, float size, 
-            GameObject bird) {
+    void MakeLeg2(int rand, int side, float size, GameObject bird) {
         GameObject leg = GameObject.CreatePrimitive(PrimitiveType.Cube);
         leg.name = "Leg " + side;
         leg.name = "Leg " + side;
@@ -430,8 +426,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Generates variation three of creature's leg (Cylinder)
-    public static void MakeLeg3(int rand, int side, float size, 
-            GameObject bird) {
+    void MakeLeg3(int rand, int side, float size, GameObject bird) {
         GameObject leg = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         leg.name = "Leg " + side;
         if (side == 1) {
@@ -455,7 +450,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Generates the variation 1 of creature's tail made of planes and quads
-    public static void MakeTail1(int rand, float size, GameObject bird) {
+    void MakeTail1(int rand, float size, GameObject bird) {
         // Top (main + tip)
         GameObject tailmt = GameObject.CreatePrimitive(PrimitiveType.Plane);
         tailmt.name = "Tail Main Top";
@@ -510,7 +505,7 @@ public class CreateCreatures : MonoBehaviour {
 
     // Generates the variation 2 of creature's tail made of a BEST attempted
     // subdivision mesh
-    public static void MakeTail2(int rand, float size, GameObject bird) {
+    void MakeTail2(int rand, float size, GameObject bird) {
         GameObject tl = new GameObject("Tail");
         tl.transform.position = size * 
             new Vector3(-0.2f + 2 * rand, 0.75f, 0.4f);                
@@ -537,7 +532,7 @@ public class CreateCreatures : MonoBehaviour {
 
     // Creates the basis tail mesh that's two squared based pyramids 
     // on top of each other
-    public static Mesh CreateTail2Mesh() {
+    Mesh CreateTail2Mesh() {
         Mesh mesh = new Mesh();
 
         // vertices of the mesh
@@ -601,7 +596,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Make a triangle from three vertex indices (clockwise order)
-	public static void MakeTri(int i1, int i2, int i3) {
+	void MakeTri(int i1, int i2, int i3) {
 		// figure out the base index for storing triangle indices
 		int index = ntris * 3;
 		ntris++;
@@ -612,33 +607,33 @@ public class CreateCreatures : MonoBehaviour {
 	}
 
 	// Make a quadrilateral from four vertex indices (clockwise order)
-	public static void MakeQuad(int i1, int i2, int i3, int i4) {
+	void MakeQuad(int i1, int i2, int i3, int i4) {
 		MakeTri(i1, i2, i3);
 		MakeTri(i3, i2, i4);
 	}
 
     // Gets the triangle number of a given index in Vertex Table
-    public static int Triangle_Number(int c) {
+    int Triangle_Number(int c) {
         return (int)c / 3;
     }
 
     // Gets the next corner of a given index in Vertex Table
-    public static int Next_Corner(int c) {
+    int Next_Corner(int c) {
         return 3 * Triangle_Number(c) + (c + 1) % 3;
     }
 
     // Gets the previous corner of a given index in Vertex Table
-    public static int Previous_Corner(int c) {
+    int Previous_Corner(int c) {
         return Next_Corner(Next_Corner(c));
     }
 
     // The Swing operator for going around to adjacent vertices
-    public static int Swing(int c, int[] O) {
+    int Swing(int c, int[] O) {
         return Next_Corner(O[Next_Corner(c)]);
     }
 
     // Geometry table G with implied index of (x, y, z) for vertices
-    public static int[] Geometry_Table(Mesh mesh) {
+    int[] Geometry_Table(Mesh mesh) {
         int num_verts = mesh.vertices.Length;
 
         int[] G = new int[num_verts];
@@ -651,7 +646,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Vertex table V with implied indecies to G table
-    public static int[] Vertex_Table(Mesh mesh) {
+    int[] Vertex_Table(Mesh mesh) {
         int tris = mesh.triangles.Length;
 
         int[] V = new int[tris];
@@ -664,7 +659,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Opposites table O from table V
-    public static int[] Opposite_Table(Mesh mesh) {
+    int[] Opposite_Table(Mesh mesh) {
         int[] G = Geometry_Table(mesh);
         int[] V = Vertex_Table(mesh);
         int[] O = new int[V.Length];
@@ -685,7 +680,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Calculates a new even vertex during subdivision
-    public static Vector3 NewEvenVert(Vector3 p, int[] V, Mesh mesh) {
+    Vector3 NewEvenVert(Vector3 p, int[] V, Mesh mesh) {
         int k = 0;
         float B;
         Vector3 sum = new Vector3(0, 0, 0);
@@ -708,7 +703,7 @@ public class CreateCreatures : MonoBehaviour {
 
     // Applies loop subdivision to given mesh
     // Couldn't fully fix bugs to achieve proper subdivision :(
-    public static Mesh SubDivision(Mesh mesh) {
+    Mesh SubDivision(Mesh mesh) {
         // Get adjacencies
         int[] G = Geometry_Table(mesh);
         int[] V = Vertex_Table(mesh);
@@ -768,7 +763,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Create a texture map to place on body parts
-	public static Texture2D TextureMap(int num) {
+	Texture2D TextureMap(int num) {
         // dimenstions of texture
         int width = 100 * num;
         int height = 100 * num;
@@ -801,5 +796,5 @@ public class CreateCreatures : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         
-    }
+    } 
 }
