@@ -52,6 +52,25 @@ public class GenerateBuildings : MonoBehaviour {
                     GameObject building = GenerateBuilding(3);
                     building.transform.position = new Vector3(i, 0, j);
                     building.transform.localScale = 0.1f * new Vector3(1, 1, 1);
+                } else if (cg.Grid[i, j] == 0 && 
+                        (i == 42 || i == cg.Columns - 42) && j % 5 == 0 &&
+                        j > 42 && j < cg.Rows - 42) {
+                    GameObject building = GenerateBuilding(4);
+                    building.transform.position 
+                        = new Vector3(i - 10f, 0, j / 2);
+                    building.transform.localScale = 0.2f * new Vector3(1, 1, 1);
+                } else if (cg.Grid[i, j] == 0 && 
+                        i == 42 && j >= cg.Rows / 4 && j <= cg.Rows * 0.75) {
+                    GameObject building = GenerateBuilding(5);
+                    building.transform.position 
+                        = new Vector3(i, 0, j);
+                    building.transform.localScale = 0.3f * new Vector3(1, 1, 1);
+                } else if (cg.Grid[i, j] == 0 && 
+                       i == 66 && j >= cg.Rows / 4 && j <= cg.Rows * 0.75) {
+                    GameObject building = GenerateBuilding(6);
+                    building.transform.position 
+                        = new Vector3(i, 0, j);
+                    building.transform.localScale = 0.6f * new Vector3(1, 1, 1);
                 }
             }
         }
@@ -59,7 +78,7 @@ public class GenerateBuildings : MonoBehaviour {
 
     // Function for making desired building type based on given integer
     GameObject GenerateBuilding(int i) {
-        int num = Random.Range(1, i + 10);
+        int num = 1; /*Random.Range(1, i + 10)*/;
         float chance = Random.Range(0f, 1f);
 
         GameObject building = new GameObject();
