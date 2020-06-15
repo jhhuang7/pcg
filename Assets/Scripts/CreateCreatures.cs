@@ -10,13 +10,13 @@ public class CreateCreatures : MonoBehaviour {
     public int NumCreatures = 5;
 
     // The vertices of the mesh
-	private static Vector3[] verts;
+	private static Vector3[] Verts;
 
 	// The triangles of the mesh (triplets of integer references to vertices)
-	private static int[] tris;
+	private static int[] Tris;
 
 	// The number of triangles that have been created so far
-	private static int ntris = 0;
+	private static int Ntris = 0;
 
     // Start is called before the first frame update
     void Start() {
@@ -107,11 +107,11 @@ public class CreateCreatures : MonoBehaviour {
             beak.transform.Rotate(-90f, 0, 150f);
             bk = CreateBeak2();
         }
-        ntris = 0; // reset to 0, else will cause Index Out of Bounds
+        Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         // Apply subdivision surfaces to mesh several times
         for (int i = 0; i < 2; i++) {
             bk = SubDivision(bk);
-            ntris = 0; // reset to 0, else will cause Index Out of Bounds
+            Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         }
 
         beak.AddComponent<MeshFilter>();
@@ -173,36 +173,36 @@ public class CreateCreatures : MonoBehaviour {
         Mesh mesh = new Mesh();
         
         // vertices of the mesh
-        int num_verts = 18;
-		verts = new Vector3[num_verts];
+        int num_Verts = 18;
+		Verts = new Vector3[num_Verts];
 
 		// vertices 
-		verts[0] = new Vector3(0, 0, 1);
-		verts[1] = new Vector3(0.5f, 1, 0.5f);
-		verts[2] = new Vector3(0, 0, 0);
+		Verts[0] = new Vector3(0, 0, 1);
+		Verts[1] = new Vector3(0.5f, 1, 0.5f);
+		Verts[2] = new Vector3(0, 0, 0);
 
-		verts[3] = new Vector3(0, 0, 0);
-		verts[4] = new Vector3(0.5f, 1, 0.5f);
-		verts[5] = new Vector3(1, 0, 0);
+		Verts[3] = new Vector3(0, 0, 0);
+		Verts[4] = new Vector3(0.5f, 1, 0.5f);
+		Verts[5] = new Vector3(1, 0, 0);
 
-		verts[6] = new Vector3(0.5f, 1, 0.5f);
-		verts[7] = new Vector3(1, 0, 1);
-		verts[8] = new Vector3(1, 0, 0);
+		Verts[6] = new Vector3(0.5f, 1, 0.5f);
+		Verts[7] = new Vector3(1, 0, 1);
+		Verts[8] = new Vector3(1, 0, 0);
 
-		verts[9] = new Vector3(0.5f, 1, 0.5f);
-		verts[10] = new Vector3(0, 0, 1);
-		verts[11] = new Vector3(1, 0, 1);
+		Verts[9] = new Vector3(0.5f, 1, 0.5f);
+		Verts[10] = new Vector3(0, 0, 1);
+		Verts[11] = new Vector3(1, 0, 1);
 
-		verts[12] = new Vector3(0, 0, 1);
-		verts[13] = new Vector3(0, 0, 0);
-		verts[14] = new Vector3(1, 0, 1);
+		Verts[12] = new Vector3(0, 0, 1);
+		Verts[13] = new Vector3(0, 0, 0);
+		Verts[14] = new Vector3(1, 0, 1);
 
-		verts[15] = new Vector3(1, 0, 1);
-        verts[16] = new Vector3(0, 0, 0);
-        verts[17] = new Vector3(1, 0, 0);
+		Verts[15] = new Vector3(1, 0, 1);
+        Verts[16] = new Vector3(0, 0, 0);
+        Verts[17] = new Vector3(1, 0, 0);
 
-		int num_tris = 6;
-		tris = new int[num_tris * 3]; // need 3 vertices per triangle
+		int num_Tris = 6;
+		Tris = new int[num_Tris * 3]; // need 3 vertices per triangle
 
 		// make the rectangles from vertices
         MakeTri(0, 1, 2);
@@ -213,8 +213,8 @@ public class CreateCreatures : MonoBehaviour {
 		MakeTri(15, 16, 17);
 
 		// save the vertices and triangles in the mesh object
-		mesh.vertices = verts;
-		mesh.triangles = tris;
+		mesh.vertices = Verts;
+		mesh.triangles = Tris;
 
 		// automatically calculate the vertex normals
 		mesh.RecalculateNormals();
@@ -228,28 +228,28 @@ public class CreateCreatures : MonoBehaviour {
 		Mesh mesh = new Mesh();
 
 		// vertices of a tetrahedron
-		int num_verts = 12;
-		verts = new Vector3[num_verts];
+		int num_Verts = 12;
+		Verts = new Vector3[num_Verts];
 
 		// vertices for faces of the tetrahedron
-		verts[0] = new Vector3(-1, 1, -1);
-		verts[1] = new Vector3(-1, -1, 1);
-		verts[2] = new Vector3(1, 1, 1);
+		Verts[0] = new Vector3(-1, 1, -1);
+		Verts[1] = new Vector3(-1, -1, 1);
+		Verts[2] = new Vector3(1, 1, 1);
 
-		verts[3] = new Vector3(1, -1, -1);
-		verts[4] = new Vector3(-1, 1, -1);
-		verts[5] = new Vector3(1, 1, 1);
+		Verts[3] = new Vector3(1, -1, -1);
+		Verts[4] = new Vector3(-1, 1, -1);
+		Verts[5] = new Vector3(1, 1, 1);
 
-		verts[6] = new Vector3(-1, -1, 1);
-		verts[7] = new Vector3(-1, 1, -1);
-		verts[8] = new Vector3(1, -1, -1);
+		Verts[6] = new Vector3(-1, -1, 1);
+		Verts[7] = new Vector3(-1, 1, -1);
+		Verts[8] = new Vector3(1, -1, -1);
 
-		verts[9] = new Vector3(-1, -1, 1);
-		verts[10] = new Vector3(1, -1, -1);
-		verts[11] = new Vector3(1, 1, 1);
+		Verts[9] = new Vector3(-1, -1, 1);
+		Verts[10] = new Vector3(1, -1, -1);
+		Verts[11] = new Vector3(1, 1, 1);
 
-		int num_tris = 4; // need 4 triangles for 4 faces of tetrahedron
-		tris = new int[num_tris * 3]; // need 3 vertices per triangle
+		int num_Tris = 4; // need 4 triangles for 4 faces of tetrahedron
+		Tris = new int[num_Tris * 3]; // need 3 vertices per triangle
 
 		// make the triangles from vertices
 		MakeTri(0, 1, 2);
@@ -258,8 +258,8 @@ public class CreateCreatures : MonoBehaviour {
 		MakeTri(9, 10, 11);
 
 		// save the vertices and triangles in the mesh object
-		mesh.vertices = verts;
-		mesh.triangles = tris;
+		mesh.vertices = Verts;
+		mesh.triangles = Tris;
 
 		// automatically calculate the vertex normals
 		mesh.RecalculateNormals();
@@ -512,11 +512,11 @@ public class CreateCreatures : MonoBehaviour {
         tl.transform.localScale = size * new Vector3(0.5f, 0.5f, 0.5f);
         tl.transform.Rotate(45f, 90f, 45f);
         Mesh tail = CreateTail2Mesh();
-        ntris = 0; // reset to 0, else will cause Index Out of Bounds
+        Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         // Apply subdivision surfaces to mesh several times
         for (int i = 0; i < 3; i++) {
             tail = SubDivision(tail);
-            ntris = 0; // reset to 0, else will cause Index Out of Bounds
+            Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         }
 
         tl.AddComponent<MeshFilter>();
@@ -536,44 +536,44 @@ public class CreateCreatures : MonoBehaviour {
         Mesh mesh = new Mesh();
 
         // vertices of the mesh
-        int num_verts = 24;
-		verts = new Vector3[num_verts];
+        int num_Verts = 24;
+		Verts = new Vector3[num_Verts];
 
 		// vertices 
-		verts[0] = new Vector3(0, 0, 1);
-		verts[1] = new Vector3(0.5f, 1, 0.5f);
-		verts[2] = new Vector3(0, 0, 0);
+		Verts[0] = new Vector3(0, 0, 1);
+		Verts[1] = new Vector3(0.5f, 1, 0.5f);
+		Verts[2] = new Vector3(0, 0, 0);
 
-		verts[3] = new Vector3(0, 0, 0);
-		verts[4] = new Vector3(0.5f, 1, 0.5f);
-		verts[5] = new Vector3(1, 0, 0);
+		Verts[3] = new Vector3(0, 0, 0);
+		Verts[4] = new Vector3(0.5f, 1, 0.5f);
+		Verts[5] = new Vector3(1, 0, 0);
 
-		verts[6] = new Vector3(0.5f, 1, 0.5f);
-		verts[7] = new Vector3(1, 0, 1);
-		verts[8] = new Vector3(1, 0, 0);
+		Verts[6] = new Vector3(0.5f, 1, 0.5f);
+		Verts[7] = new Vector3(1, 0, 1);
+		Verts[8] = new Vector3(1, 0, 0);
 
-		verts[9] = new Vector3(0.5f, 1, 0.5f);
-		verts[10] = new Vector3(0, 0, 1);
-		verts[11] = new Vector3(1, 0, 1);
+		Verts[9] = new Vector3(0.5f, 1, 0.5f);
+		Verts[10] = new Vector3(0, 0, 1);
+		Verts[11] = new Vector3(1, 0, 1);
 
-        verts[12] = new Vector3(0.5f, -1, 0.5f);
-		verts[13] = new Vector3(0, 0, 1);
-		verts[14] = new Vector3(0, 0, 0);
+        Verts[12] = new Vector3(0.5f, -1, 0.5f);
+		Verts[13] = new Vector3(0, 0, 1);
+		Verts[14] = new Vector3(0, 0, 0);
 
-		verts[15] = new Vector3(0.5f, -1, 0.5f);
-		verts[16] = new Vector3(0, 0, 0);
-		verts[17] = new Vector3(1, 0, 0);
+		Verts[15] = new Vector3(0.5f, -1, 0.5f);
+		Verts[16] = new Vector3(0, 0, 0);
+		Verts[17] = new Vector3(1, 0, 0);
 
-		verts[18] = new Vector3(0.5f, -1, 0.5f);
-		verts[19] = new Vector3(1, 0, 0);
-		verts[20] = new Vector3(1, 0, 1);
+		Verts[18] = new Vector3(0.5f, -1, 0.5f);
+		Verts[19] = new Vector3(1, 0, 0);
+		Verts[20] = new Vector3(1, 0, 1);
 
-		verts[21] = new Vector3(0.5f, -1, 0.5f);
-		verts[22] = new Vector3(1, 0, 1);
-		verts[23] = new Vector3(0, 0, 1);
+		Verts[21] = new Vector3(0.5f, -1, 0.5f);
+		Verts[22] = new Vector3(1, 0, 1);
+		Verts[23] = new Vector3(0, 0, 1);
 
-		int num_tris = 8;
-		tris = new int[num_tris * 3]; // need 3 vertices per triangle
+		int num_Tris = 8;
+		Tris = new int[num_Tris * 3]; // need 3 vertices per triangle
 
 		// make the rectangles from vertices
         MakeTri(0, 1, 2);
@@ -586,8 +586,8 @@ public class CreateCreatures : MonoBehaviour {
         MakeTri(21, 22, 23);
 
 		// save the vertices and triangles in the mesh object
-		mesh.vertices = verts;
-		mesh.triangles = tris;
+		mesh.vertices = Verts;
+		mesh.triangles = Tris;
 
 		// automatically calculate the vertex normals
 		mesh.RecalculateNormals();
@@ -598,12 +598,12 @@ public class CreateCreatures : MonoBehaviour {
     // Make a triangle from three vertex indices (clockwise order)
 	void MakeTri(int i1, int i2, int i3) {
 		// figure out the base index for storing triangle indices
-		int index = ntris * 3;
-		ntris++;
+		int index = Ntris * 3;
+		Ntris++;
 
-		tris[index] = i1;
-		tris[index + 1] = i2;
-		tris[index + 2] = i3;
+		Tris[index] = i1;
+		Tris[index + 1] = i2;
+		Tris[index + 2] = i3;
 	}
 
 	// Make a quadrilateral from four vertex indices (clockwise order)
@@ -634,11 +634,11 @@ public class CreateCreatures : MonoBehaviour {
 
     // Geometry table G with implied index of (x, y, z) for vertices
     int[] Geometry_Table(Mesh mesh) {
-        int num_verts = mesh.vertices.Length;
+        int num_Verts = mesh.vertices.Length;
 
-        int[] G = new int[num_verts];
+        int[] G = new int[num_Verts];
 
-        for (int i = 0; i < num_verts; i++) {
+        for (int i = 0; i < num_Verts; i++) {
             G[i] = i;
         }
 
@@ -647,11 +647,11 @@ public class CreateCreatures : MonoBehaviour {
 
     // Vertex table V with implied indecies to G table
     int[] Vertex_Table(Mesh mesh) {
-        int tris = mesh.triangles.Length;
+        int Tris = mesh.triangles.Length;
 
-        int[] V = new int[tris];
+        int[] V = new int[Tris];
 
-        for (int i = 0; i < tris; i++) {
+        for (int i = 0; i < Tris; i++) {
             V[i] = i;
         }
 
@@ -712,12 +712,12 @@ public class CreateCreatures : MonoBehaviour {
         Mesh new_mesh = new Mesh();
         
         // vertices of the mesh
-        int num_verts = mesh.vertices.Length * 4; // 4 times vertices
-		verts = new Vector3[num_verts];
+        int num_Verts = mesh.vertices.Length * 4; // 4 times vertices
+		Verts = new Vector3[num_Verts];
         int i = 0;
         for (int c = 0; c < V.Length; c += 3) {
             int cn = Next_Corner(c);
-            int cnn = Next_Corner(cn); // split into 4 tris
+            int cnn = Next_Corner(cn); // split into 4 Tris
 
             // Create new vertices
             Vector3 p1 = mesh.vertices[G[c]];
@@ -731,30 +731,30 @@ public class CreateCreatures : MonoBehaviour {
             Vector3 e3 = 3 / 8f * (p3 + p1) + 1 / 8f * (p3o + p1o);
 
             // Put new vertices into array
-            verts[i++] = p1; // NewEvenVert(p1, V, mesh); 
-            verts[i++] = e1;
-            verts[i++] = e3;
-            verts[i++] = p2; // NewEvenVert(p2, V, mesh);
-            verts[i++] = e2;
-            verts[i++] = e1;
-            verts[i++] = p3; // NewEvenVert(p3, V, mesh);
-            verts[i++] = e3;
-            verts[i++] = e2;
-            verts[i++] = e1;
-            verts[i++] = e2;
-            verts[i++] = e3;
+            Verts[i++] = p1; // NewEvenVert(p1, V, mesh); 
+            Verts[i++] = e1;
+            Verts[i++] = e3;
+            Verts[i++] = p2; // NewEvenVert(p2, V, mesh);
+            Verts[i++] = e2;
+            Verts[i++] = e1;
+            Verts[i++] = p3; // NewEvenVert(p3, V, mesh);
+            Verts[i++] = e3;
+            Verts[i++] = e2;
+            Verts[i++] = e1;
+            Verts[i++] = e2;
+            Verts[i++] = e3;
         }
 
 		// make the rectangles from vertices
-        int num_tris = mesh.triangles.Length * 4; // split into 4 tris
-        tris = new int[num_tris];
-        for (int j = 0; j < num_verts; j += 3) {
+        int num_Tris = mesh.triangles.Length * 4; // split into 4 Tris
+        Tris = new int[num_Tris];
+        for (int j = 0; j < num_Verts; j += 3) {
             MakeTri(j, j + 1, j + 2);
         }
 
 		// save the vertices and triangles in the mesh object
-		new_mesh.vertices = verts;
-		new_mesh.triangles = tris;
+		new_mesh.vertices = Verts;
+		new_mesh.triangles = Tris;
 
 		// automatically calculate the vertex normals
 		new_mesh.RecalculateNormals();

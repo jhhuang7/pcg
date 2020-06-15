@@ -16,17 +16,17 @@ public class GenerateBuildings : MonoBehaviour {
     public Material Wall2;
     public Material Wall3;
 
-    // Array for footprint of building
-    private int[,] footprint;
+    // Array for Footprint of building
+    private int[,] Footprint;
 
     // The vertices of the mesh
-	private Vector3[] verts;
+	private Vector3[] Verts;
 
 	// The triangles of the mesh (triplets of integer references to vertices)
-	private int[] tris;
+	private int[] Tris;
 
 	// The number of triangles that have been created so far
-	private int ntris = 0;
+	private int Ntris = 0;
 
     // Start is called before the first frame update
     void Start() {
@@ -109,14 +109,14 @@ public class GenerateBuildings : MonoBehaviour {
 
     // Make a cross-shaped house with a cross-gable roof
     void BuildingOne(int num, GameObject building) {
-        // Define footprint
-        footprint = new int[3, 3];
+        // Define Footprint
+        Footprint = new int[3, 3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i == 1 || j == 1) {
-                    footprint[i, j] = 1;
+                    Footprint[i, j] = 1;
                 } else {
-                    footprint[i, j] = 0;
+                    Footprint[i, j] = 0;
                 }
             }
         }
@@ -124,7 +124,7 @@ public class GenerateBuildings : MonoBehaviour {
         // Make building with cubes
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (footprint[i, j] == 1) {
+                if (Footprint[i, j] == 1) {
                     // Each section is divided into 6 blocks
                     GameObject block1
                         = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -212,7 +212,7 @@ public class GenerateBuildings : MonoBehaviour {
         r.transform.position = new Vector3(-1, 1.5f, 1 - 20 * num);
         r.transform.localScale = new Vector3(2f, 1.5f, 2f);
         Mesh roof = CreateGableRoof();
-        ntris = 0; // reset to 0, else will cause Index Out of Bounds
+        Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         r.AddComponent<MeshFilter>();
         r.AddComponent<MeshRenderer>();
         r.GetComponent<MeshFilter>().mesh = roof;
@@ -225,14 +225,14 @@ public class GenerateBuildings : MonoBehaviour {
 
     // Make an 'L' shaped house with cross-hip roof
     void BuildingTwo(int num, GameObject building) {
-        // Define footprint
-        footprint = new int[3, 3];
+        // Define Footprint
+        Footprint = new int[3, 3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i == 0 || j == 0) {
-                    footprint[i, j] = 1;
+                    Footprint[i, j] = 1;
                 } else {
-                    footprint[i, j] = 0;
+                    Footprint[i, j] = 0;
                 }
             }
         }
@@ -240,7 +240,7 @@ public class GenerateBuildings : MonoBehaviour {
         // Make building with cubes
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (footprint[i, j] == 1) {
+                if (Footprint[i, j] == 1) {
                     // Each section is divided into 6 blocks
                     GameObject block1
                         = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -342,7 +342,7 @@ public class GenerateBuildings : MonoBehaviour {
         r.transform.position = new Vector3(10 * num - 1, 1.5f, -1 - 10 * num);
         r.transform.localScale = new Vector3(2f, 1.5f, 2f);
         Mesh roof = CreateHipRoof();
-        ntris = 0; // reset to 0, else will cause Index Out of Bounds
+        Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         r.AddComponent<MeshFilter>();
         r.AddComponent<MeshRenderer>();
         r.GetComponent<MeshFilter>().mesh = roof;
@@ -355,18 +355,18 @@ public class GenerateBuildings : MonoBehaviour {
 
     // Make Union College (a 'Z' shaped apartment block)
     void BuildingThree(int num, GameObject building) {
-        // Define footprint
-        footprint = new int[5, 5];
+        // Define Footprint
+        Footprint = new int[5, 5];
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 if (i == 2) {
-                    footprint[i, j] = 1;
+                    Footprint[i, j] = 1;
                 } else if (i >= 2 && j <= 1) {
-                    footprint[i, j] = 1;
+                    Footprint[i, j] = 1;
                 } else if (i <= 2 && j >= 3) {
-                    footprint[i, j] = 1;
+                    Footprint[i, j] = 1;
                 } else {
-                    footprint[i, j] = 0;
+                    Footprint[i, j] = 0;
                 }
             }
         }
@@ -374,7 +374,7 @@ public class GenerateBuildings : MonoBehaviour {
         // Make building with cubes
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if (footprint[i, j] == 1) {
+                if (Footprint[i, j] == 1) {
                     // Each section is divided into 8 blocks
                     GameObject block1
                         = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -567,7 +567,7 @@ public class GenerateBuildings : MonoBehaviour {
             = new Vector3(-1.25f, 3f, 5f + 30 * num + 8.75f);
         r1.transform.localScale = new Vector3(2f, 0.75f, 2f);
         Mesh roof1 = CreateTriangularRoof();
-        ntris = 0; // reset to 0, else will cause Index Out of Bounds
+        Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         r1.AddComponent<MeshFilter>();
         r1.AddComponent<MeshRenderer>();
         r1.GetComponent<MeshFilter>().mesh = roof1;
@@ -582,7 +582,7 @@ public class GenerateBuildings : MonoBehaviour {
             = new Vector3(13.75f, 3f, 5f + 30 * num - 6.25f);
         r2.transform.localScale = new Vector3(2f, 0.75f, 2f);
         Mesh roof2 = CreateTriangularRoof();
-        ntris = 0; // reset to 0, else will cause Index Out of Bounds
+        Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         r2.AddComponent<MeshFilter>();
         r2.AddComponent<MeshRenderer>();
         r2.GetComponent<MeshFilter>().mesh = roof2;
@@ -597,7 +597,7 @@ public class GenerateBuildings : MonoBehaviour {
             = new Vector3(8.75f, 6f, 5f + 30 * num - 6.25f);
         r3.transform.localScale = new Vector3(1f, 1f, 5f);
         Mesh roof = CreateTriangularRoof();
-        ntris = 0; // reset to 0, else will cause Index Out of Bounds
+        Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         r3.AddComponent<MeshFilter>();
         r3.AddComponent<MeshRenderer>();
         r3.GetComponent<MeshFilter>().mesh = roof;
@@ -610,14 +610,14 @@ public class GenerateBuildings : MonoBehaviour {
 
     // Make a regular bunker-style house with a triangular roof
     void BuildingFour(int num, GameObject building) {
-        // Define footprint
-        footprint = new int[7, 7];
+        // Define Footprint
+        Footprint = new int[7, 7];
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 if (i == 0 || j == 0 || i == 6 || j == 6) {
-                    footprint[i, j] = 0;
+                    Footprint[i, j] = 0;
                 } else {
-                    footprint[i, j] = 1;
+                    Footprint[i, j] = 1;
                 }
             }
         }
@@ -625,7 +625,7 @@ public class GenerateBuildings : MonoBehaviour {
         // Make building with cubes
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
-                if (footprint[i, j] == 1) {
+                if (Footprint[i, j] == 1) {
                     // Each section is divided into 4 blocks
                     GameObject block1
                         = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -699,7 +699,7 @@ public class GenerateBuildings : MonoBehaviour {
             = new Vector3(10 * num + 0.75f, 1.5f, 0.5f + 20 * num);
         r.transform.localScale = new Vector3(1f, 0.5f, 1f);
         Mesh roof = CreateTriangularRoof();
-        ntris = 0; // reset to 0, else will cause Index Out of Bounds
+        Ntris = 0; // reset to 0, else will cause Index Out of Bounds
         r.AddComponent<MeshFilter>();
         r.AddComponent<MeshRenderer>();
         r.GetComponent<MeshFilter>().mesh = roof;
@@ -712,20 +712,20 @@ public class GenerateBuildings : MonoBehaviour {
 
     // Make a skyscraper like similar to Burj Khalifa
     void BuildingFive(int num, GameObject building) {
-        // Define footprint
-        footprint = new int[5, 3];
-        footprint[2, 0] = 1;
+        // Define Footprint
+        Footprint = new int[5, 3];
+        Footprint[2, 0] = 1;
         for (int i = 1; i < 4; i++) {
-            footprint[i, 1] = 1;
+            Footprint[i, 1] = 1;
         }
         for (int j = 0; j < 5; j++) {
-            footprint[j, 2] = 1;
+            Footprint[j, 2] = 1;
         }
 
         // Make building with cylinders
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 3; j++) {
-                if (footprint[i, j] == 1) {
+                if (Footprint[i, j] == 1) {
                     GameObject block 
                         = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                     block.name = "Burj " + i + "," + j;
@@ -770,14 +770,14 @@ public class GenerateBuildings : MonoBehaviour {
 
     // Make a hotel like building similar to Marina Bay Sands
     void BuildingSix(int num, GameObject building) {
-        // Define footprint
-        footprint = new int[10, 3];
+        // Define Footprint
+        Footprint = new int[10, 3];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i == 0 || i == 1 || i == 4 || i == 5 || i == 8 || i == 9) {
-                    footprint[i, j] = 1;
+                    Footprint[i, j] = 1;
                 } else {
-                    footprint[i, j] = 0;
+                    Footprint[i, j] = 0;
                 }
             } 
         }
@@ -785,7 +785,7 @@ public class GenerateBuildings : MonoBehaviour {
         // Make building with cubes
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 3; j++) {
-                if (footprint[i, j] == 1) {
+                if (Footprint[i, j] == 1) {
                     // Each section is divided into 5 blocks
                     GameObject block1
                         = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -866,33 +866,33 @@ public class GenerateBuildings : MonoBehaviour {
         Mesh mesh = new Mesh();
         
         // vertices of the mesh
-        int num_verts = 16;
-		verts = new Vector3[num_verts];
+        int num_Verts = 16;
+		Verts = new Vector3[num_Verts];
 
 		// vertices 
-		verts[0] = new Vector3(0, 0, 5);
-		verts[1] = new Vector3(2.5f, 2, 2.5f);
-		verts[2] = new Vector3(0, 0, 0);
+		Verts[0] = new Vector3(0, 0, 5);
+		Verts[1] = new Vector3(2.5f, 2, 2.5f);
+		Verts[2] = new Vector3(0, 0, 0);
 
-		verts[3] = new Vector3(0, 0, 0);
-		verts[4] = new Vector3(2.5f, 2, 2.5f);
-		verts[5] = new Vector3(5, 0, 0);
+		Verts[3] = new Vector3(0, 0, 0);
+		Verts[4] = new Vector3(2.5f, 2, 2.5f);
+		Verts[5] = new Vector3(5, 0, 0);
 
-		verts[6] = new Vector3(2.5f, 2, 2.5f);
-		verts[7] = new Vector3(5, 0, 5);
-		verts[8] = new Vector3(5, 0, 0);
+		Verts[6] = new Vector3(2.5f, 2, 2.5f);
+		Verts[7] = new Vector3(5, 0, 5);
+		Verts[8] = new Vector3(5, 0, 0);
 
-		verts[9] = new Vector3(2.5f, 2, 2.5f);
-		verts[10] = new Vector3(0, 0, 5);
-		verts[11] = new Vector3(5, 0, 5);
+		Verts[9] = new Vector3(2.5f, 2, 2.5f);
+		Verts[10] = new Vector3(0, 0, 5);
+		Verts[11] = new Vector3(5, 0, 5);
 
-		verts[12] = new Vector3(0, 0, 5);
-		verts[13] = new Vector3(0, 0, 0);
-		verts[14] = new Vector3(5, 0, 5);
-		verts[15] = new Vector3(5, 0, 0);
+		Verts[12] = new Vector3(0, 0, 5);
+		Verts[13] = new Vector3(0, 0, 0);
+		Verts[14] = new Vector3(5, 0, 5);
+		Verts[15] = new Vector3(5, 0, 0);
 
         // create uv coordinates
-        Vector2[] uv = new Vector2[num_verts];
+        Vector2[] uv = new Vector2[num_Verts];
 
         uv[0] = new Vector2(0, 5);
 		uv[1] = new Vector2(2.5f, 2.5f);
@@ -915,8 +915,8 @@ public class GenerateBuildings : MonoBehaviour {
 		uv[14] = new Vector2(5, 5);
 		uv[15] = new Vector2(5, 0);
 
-		int num_tris = 6;
-		tris = new int[num_tris * 3]; // need 3 vertices per triangle
+		int num_Tris = 6;
+		Tris = new int[num_Tris * 3]; // need 3 vertices per triangle
 
 		// make the rectangles from vertices
         MakeTri(0, 1, 2);
@@ -926,8 +926,8 @@ public class GenerateBuildings : MonoBehaviour {
         MakeQuad(12, 13, 14, 15);
 
 		// save the vertices and triangles in the mesh object
-		mesh.vertices = verts;
-		mesh.triangles = tris;
+		mesh.vertices = Verts;
+		mesh.triangles = Tris;
         mesh.uv = uv;
 
 		// automatically calculate the vertex normals
@@ -941,50 +941,50 @@ public class GenerateBuildings : MonoBehaviour {
         Mesh mesh = new Mesh();
 
         // vertices of the mesh
-		int num_verts = 30;
-		verts = new Vector3[num_verts];
+		int num_Verts = 30;
+		Verts = new Vector3[num_Verts];
 
 		// vertices
-		verts[0] = new Vector3(3, 0, 0);
-		verts[1] = new Vector3(3, 0.8f, 0.5f);
-		verts[2] = new Vector3(3, 0, 1);
+		Verts[0] = new Vector3(3, 0, 0);
+		Verts[1] = new Vector3(3, 0.8f, 0.5f);
+		Verts[2] = new Vector3(3, 0, 1);
 
-		verts[3] = new Vector3(0.5f, 0.8f, 0.5f);
-		verts[4] = new Vector3(1, 0, 1);
-		verts[5] = new Vector3(3, 0.8f, 0.5f);
-		verts[6] = new Vector3(3, 0, 1);
+		Verts[3] = new Vector3(0.5f, 0.8f, 0.5f);
+		Verts[4] = new Vector3(1, 0, 1);
+		Verts[5] = new Vector3(3, 0.8f, 0.5f);
+		Verts[6] = new Vector3(3, 0, 1);
 
-		verts[7] = new Vector3(0, 0, 0);
-		verts[8] = new Vector3(0.5f, 0.8f, 0.5f);
-		verts[9] = new Vector3(3, 0, 0);
-		verts[10] = new Vector3(3, 0.8f, 0.5f);
+		Verts[7] = new Vector3(0, 0, 0);
+		Verts[8] = new Vector3(0.5f, 0.8f, 0.5f);
+		Verts[9] = new Vector3(3, 0, 0);
+		Verts[10] = new Vector3(3, 0.8f, 0.5f);
 
-		verts[11] = new Vector3(0, 0, 1);
-		verts[12] = new Vector3(0, 0, 0);
-		verts[13] = new Vector3(3, 0, 1);
-		verts[14] = new Vector3(3, 0, 0);
+		Verts[11] = new Vector3(0, 0, 1);
+		Verts[12] = new Vector3(0, 0, 0);
+		Verts[13] = new Vector3(3, 0, 1);
+		Verts[14] = new Vector3(3, 0, 0);
 
-        verts[15] = new Vector3(0.5f, 0.8f, 3);
-		verts[16] = new Vector3(0, 0, 3);
-		verts[17] = new Vector3(1, 0, 3);
+        Verts[15] = new Vector3(0.5f, 0.8f, 3);
+		Verts[16] = new Vector3(0, 0, 3);
+		Verts[17] = new Vector3(1, 0, 3);
 
-		verts[18] = new Vector3(0, 0, 0);
-		verts[19] = new Vector3(0, 0, 3);
-		verts[20] = new Vector3(0.5f, 0.8f, 0.5f);
-		verts[21] = new Vector3(0.5f, 0.8f, 3);
+		Verts[18] = new Vector3(0, 0, 0);
+		Verts[19] = new Vector3(0, 0, 3);
+		Verts[20] = new Vector3(0.5f, 0.8f, 0.5f);
+		Verts[21] = new Vector3(0.5f, 0.8f, 3);
 
-		verts[22] = new Vector3(0.5f, 0.8f, 0.5f);
-		verts[23] = new Vector3(0.5f, 0.8f, 3);
-		verts[24] = new Vector3(1, 0, 1);
-		verts[25] = new Vector3(1, 0, 3);
+		Verts[22] = new Vector3(0.5f, 0.8f, 0.5f);
+		Verts[23] = new Vector3(0.5f, 0.8f, 3);
+		Verts[24] = new Vector3(1, 0, 1);
+		Verts[25] = new Vector3(1, 0, 3);
 
-		verts[26] = new Vector3(0, 0, 3);
-		verts[27] = new Vector3(0, 0, 0);
-		verts[28] = new Vector3(1, 0, 3);
-		verts[29] = new Vector3(1, 0, 0);
+		Verts[26] = new Vector3(0, 0, 3);
+		Verts[27] = new Vector3(0, 0, 0);
+		Verts[28] = new Vector3(1, 0, 3);
+		Verts[29] = new Vector3(1, 0, 0);
 
         // create uv coordinates
-        Vector2[] uv = new Vector2[num_verts];
+        Vector2[] uv = new Vector2[num_Verts];
 
         uv[0] = new Vector3(3, 0);
 		uv[1] = new Vector3(3, 0.5f);
@@ -1024,8 +1024,8 @@ public class GenerateBuildings : MonoBehaviour {
 		uv[28] = new Vector3(1, 3);
 		uv[29] = new Vector3(1, 0);
 
-		int num_tris = 14;
-		tris = new int[num_tris * 3]; // need 3 vertices per triangle
+		int num_Tris = 14;
+		Tris = new int[num_Tris * 3]; // need 3 vertices per triangle
 
 		// make the rectangles from vertices
         MakeTri(0, 1, 2);
@@ -1038,8 +1038,8 @@ public class GenerateBuildings : MonoBehaviour {
         MakeQuad(26, 27, 28, 29);
 
 		// save the vertices and triangles in the mesh object
-		mesh.vertices = verts;
-		mesh.triangles = tris;
+		mesh.vertices = Verts;
+		mesh.triangles = Tris;
         mesh.uv = uv;
 
 		// automatically calculate the vertex normals
@@ -1053,58 +1053,58 @@ public class GenerateBuildings : MonoBehaviour {
         Mesh mesh = new Mesh();
 
         // vertices of the mesh
-		int num_verts = 36;
-		verts = new Vector3[num_verts];
+		int num_Verts = 36;
+		Verts = new Vector3[num_Verts];
 
 		// vertices 
-		verts[0] = new Vector3(0, 0, 0);
-		verts[1] = new Vector3(0, 0, 1);
-		verts[2] = new Vector3(0, 0.8f, 0.5f);
+		Verts[0] = new Vector3(0, 0, 0);
+		Verts[1] = new Vector3(0, 0, 1);
+		Verts[2] = new Vector3(0, 0.8f, 0.5f);
 
-		verts[3] = new Vector3(3, 0, 0);
-		verts[4] = new Vector3(3, 0.8f, 0.5f);
-		verts[5] = new Vector3(3, 0, 1);
+		Verts[3] = new Vector3(3, 0, 0);
+		Verts[4] = new Vector3(3, 0.8f, 0.5f);
+		Verts[5] = new Vector3(3, 0, 1);
 
-		verts[6] = new Vector3(0, 0.8f, 0.5f);
-		verts[7] = new Vector3(0, 0, 1);
-		verts[8] = new Vector3(3, 0.8f, 0.5f);
-		verts[9] = new Vector3(3, 0, 1);
+		Verts[6] = new Vector3(0, 0.8f, 0.5f);
+		Verts[7] = new Vector3(0, 0, 1);
+		Verts[8] = new Vector3(3, 0.8f, 0.5f);
+		Verts[9] = new Vector3(3, 0, 1);
 
-		verts[10] = new Vector3(0, 0, 0);
-		verts[11] = new Vector3(0, 0.8f, 0.5f);
-		verts[12] = new Vector3(3, 0, 0);
-		verts[13] = new Vector3(3, 0.8f, 0.5f);
+		Verts[10] = new Vector3(0, 0, 0);
+		Verts[11] = new Vector3(0, 0.8f, 0.5f);
+		Verts[12] = new Vector3(3, 0, 0);
+		Verts[13] = new Vector3(3, 0.8f, 0.5f);
 
-		verts[14] = new Vector3(0, 0, 1);
-		verts[15] = new Vector3(0, 0, 0);
-		verts[16] = new Vector3(3, 0, 1);
-		verts[17] = new Vector3(3, 0, 0);
+		Verts[14] = new Vector3(0, 0, 1);
+		Verts[15] = new Vector3(0, 0, 0);
+		Verts[16] = new Vector3(3, 0, 1);
+		Verts[17] = new Vector3(3, 0, 0);
 
-        verts[18] = new Vector3(1, 0, -1);
-		verts[19] = new Vector3(1.5f, 0.8f, -1);
-		verts[20] = new Vector3(2, 0, -1);
+        Verts[18] = new Vector3(1, 0, -1);
+		Verts[19] = new Vector3(1.5f, 0.8f, -1);
+		Verts[20] = new Vector3(2, 0, -1);
 
-		verts[21] = new Vector3(1, 0, 2);
-		verts[22] = new Vector3(2, 0, 2);
-		verts[23] = new Vector3(1.5f, 0.8f, 2);
+		Verts[21] = new Vector3(1, 0, 2);
+		Verts[22] = new Vector3(2, 0, 2);
+		Verts[23] = new Vector3(1.5f, 0.8f, 2);
 
-		verts[24] = new Vector3(1.5f, 0.8f, -1);
-		verts[25] = new Vector3(1.5f, 0.8f, 2);
-		verts[26] = new Vector3(2, 0, -1);
-		verts[27] = new Vector3(2, 0, 2);
+		Verts[24] = new Vector3(1.5f, 0.8f, -1);
+		Verts[25] = new Vector3(1.5f, 0.8f, 2);
+		Verts[26] = new Vector3(2, 0, -1);
+		Verts[27] = new Vector3(2, 0, 2);
 
-		verts[28] = new Vector3(1, 0, -1);
-		verts[29] = new Vector3(1, 0, 2);
-		verts[30] = new Vector3(1.5f, 0.8f, -1);
-		verts[31] = new Vector3(1.5f, 0.8f, 2);
+		Verts[28] = new Vector3(1, 0, -1);
+		Verts[29] = new Vector3(1, 0, 2);
+		Verts[30] = new Vector3(1.5f, 0.8f, -1);
+		Verts[31] = new Vector3(1.5f, 0.8f, 2);
 
-		verts[32] = new Vector3(1, 0, 2);
-		verts[33] = new Vector3(1, 0, -1);
-		verts[34] = new Vector3(2, 0, 2);
-		verts[35] = new Vector3(2, 0, -1);
+		Verts[32] = new Vector3(1, 0, 2);
+		Verts[33] = new Vector3(1, 0, -1);
+		Verts[34] = new Vector3(2, 0, 2);
+		Verts[35] = new Vector3(2, 0, -1);
 
         // create uv coordinates
-        Vector2[] uv = new Vector2[num_verts];
+        Vector2[] uv = new Vector2[num_Verts];
 
         uv[0] = new Vector2(0, 0);
 		uv[1] = new Vector2(0, 1);
@@ -1152,8 +1152,8 @@ public class GenerateBuildings : MonoBehaviour {
 		uv[34] = new Vector2(2, 2);
 		uv[35] = new Vector2(2, -1);
 
-		int num_tris = 16;
-		tris = new int[num_tris * 3]; // need 3 vertices per triangle
+		int num_Tris = 16;
+		Tris = new int[num_Tris * 3]; // need 3 vertices per triangle
 
 		// make the rectangles from vertices
         MakeTri(0, 1, 2);
@@ -1168,8 +1168,8 @@ public class GenerateBuildings : MonoBehaviour {
         MakeQuad(32, 33, 34, 35);
 
 		// save the vertices and triangles in the mesh object
-		mesh.vertices = verts;
-		mesh.triangles = tris;
+		mesh.vertices = Verts;
+		mesh.triangles = Tris;
         mesh.uv = uv;
 
 		// automatically calculate the vertex normals
@@ -1181,12 +1181,12 @@ public class GenerateBuildings : MonoBehaviour {
     // Make a triangle from three vertex indices (clockwise order)
 	void MakeTri(int i1, int i2, int i3) {
 		// figure out the base index for storing triangle indices
-		int index = ntris * 3;
-		ntris++;
+		int index = Ntris * 3;
+		Ntris++;
 
-		tris[index] = i1;
-		tris[index + 1] = i2;
-		tris[index + 2] = i3;
+		Tris[index] = i1;
+		Tris[index + 1] = i2;
+		Tris[index + 2] = i3;
 	}
 
 	// Make a quadrilateral from four vertex indices (clockwise order)

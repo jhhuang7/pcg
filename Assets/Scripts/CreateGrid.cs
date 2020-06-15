@@ -14,8 +14,6 @@ public class CreateGrid : MonoBehaviour {
     public Material StreetVertical;
     public Material BuildingInner;
     public Material StreetHorizontal;
-    public Material Transparent;
-    public Material Ground;
 
     // Building Prefabs to be placed in
     public GameObject Building1;
@@ -26,13 +24,13 @@ public class CreateGrid : MonoBehaviour {
     public GameObject Building6;
 
     // The vertices of the mesh
-	private Vector3[] verts;
+	private Vector3[] Verts;
 
 	// The triangles of the mesh (triplets of integer references to vertices)
-	private int[] tris;
+	private int[] Tris;
     
 	// The number of triangles that have been created so far
-	private int ntris = 0;
+	private int Ntris = 0;
 
     // Start is called before the first frame update
     void Start() {
@@ -60,27 +58,6 @@ public class CreateGrid : MonoBehaviour {
                 MakeTile(i, j, Grid[i, j], grid);
             }
         }
-
-        // Make a World Box, so city is "under the dome"
-        GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        box.name = "World Box";
-        box.transform.position 
-            = new Vector3(Columns / 2 - 0.5f, 2.5f, Rows / 2 - 0.5f);
-        box.transform.localScale = new Vector3(Columns, 5f, Rows);
-        Renderer rnd = box.GetComponent<Renderer>();
-        rnd.material = Transparent;
-        box.transform.parent = grid.transform;
-
-        GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        ground.name = "Ground";
-        ground.transform.position 
-            = new Vector3(Columns / 2 - 0.5f, 0, Rows / 2 - 0.5f);
-        ground.transform.Rotate(180f, 0f, 0f);
-        ground.transform.localScale 
-            = new Vector3(Columns * 0.1f, 1f, Rows * 0.1f);
-        Renderer rend = ground.GetComponent<Renderer>();
-        rend.material = Ground;
-        ground.transform.parent = grid.transform;
     }
     
     // Generate a particular tile at a position
@@ -109,7 +86,7 @@ public class CreateGrid : MonoBehaviour {
                 m = new GameObject("Street Component");
                 m.transform.position = new Vector3(x - 0.5f, 0, y - 0.5f);
                 Mesh my_mesh = CreateMyMesh();
-                ntris = 0; // reset to 0, else will cause Index Out of Bounds
+                Ntris = 0; // reset to 0, else will cause Index Out of Bounds
                 m.AddComponent<MeshFilter>();
                 m.AddComponent<MeshRenderer>();
                 m.GetComponent<MeshFilter>().mesh = my_mesh;
@@ -132,42 +109,42 @@ public class CreateGrid : MonoBehaviour {
             // Place buildings
             if (x <= 2 || x >= Columns - 2 || y <= 2 || y >= Rows - 2) {
                 GameObject building;
-                building = (GameObject) Instantiate(Building3, 
+                building = (GameObject)Instantiate(Building3, 
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.25f, 0f);
                 building.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 building.transform.parent = grid.transform;
             } else if (x == 38 || (x == 40 && y == 67)) {
                 GameObject building;
-                building = (GameObject) Instantiate(Building5, 
+                building = (GameObject)Instantiate(Building5, 
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.34f, 0f);
                 building.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                 building.transform.parent = grid.transform;
-            } else if (x == 42 && y == 6) {
+            } else if (x == 42 && y % 6 == 0) {
                 GameObject building;
-                building = (GameObject) Instantiate(Building6, 
+                building = (GameObject)Instantiate(Building6, 
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.77f, 0f);
                 building.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 building.transform.parent = grid.transform;
             } else if (x == Columns / 2 || y == Rows / 2) {
                 GameObject building;
-                building = (GameObject) Instantiate(Building4, 
+                building = (GameObject)Instantiate(Building4, 
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.6f, 0f);
                 building.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                 building.transform.parent = grid.transform;
             } else if (x == Columns / 4 || y == Rows / 4) {
                 GameObject building;
-                building = (GameObject) Instantiate(Building1,
+                building = (GameObject)Instantiate(Building1,
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.25f, 0f);
                 building.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 building.transform.parent = grid.transform;
             } else if (x == Columns * 0.75 || y == Rows * 0.75) {
                 GameObject building;
-                building = (GameObject) Instantiate(Building2, 
+                building = (GameObject)Instantiate(Building2, 
                     g.transform.position, g.transform.rotation);
                 building.transform.position += new Vector3(0f, 0.6f, 0f);
                 building.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -185,52 +162,52 @@ public class CreateGrid : MonoBehaviour {
 		Mesh mesh = new Mesh();
 
 		// vertices of the mesh
-		int num_verts = 32;
-		verts = new Vector3[num_verts];
+		int num_Verts = 32;
+		Verts = new Vector3[num_Verts];
 
 		// vertices 
-		verts[0] = new Vector3(0, 0, 0);
-		verts[1] = new Vector3(0, 0, 0.4f);
-		verts[2] = new Vector3(0.2f, 0, 0);
-		verts[3] = new Vector3(0.2f, 0, 0.4f);
+		Verts[0] = new Vector3(0, 0, 0);
+		Verts[1] = new Vector3(0, 0, 0.4f);
+		Verts[2] = new Vector3(0.2f, 0, 0);
+		Verts[3] = new Vector3(0.2f, 0, 0.4f);
 
-		verts[4] = new Vector3(0.2f, 0, 0);
-		verts[5] = new Vector3(0.2f, 0, 0.2f);
-		verts[6] = new Vector3(0.4f, 0, 0f);
-		verts[7] = new Vector3(0.4f, 0, 0.2f);
+		Verts[4] = new Vector3(0.2f, 0, 0);
+		Verts[5] = new Vector3(0.2f, 0, 0.2f);
+		Verts[6] = new Vector3(0.4f, 0, 0f);
+		Verts[7] = new Vector3(0.4f, 0, 0.2f);
 
-		verts[8] = new Vector3(0, 0, 0.6f);
-		verts[9] = new Vector3(0, 0, 1);
-		verts[10] = new Vector3(0.2f, 0, 0.6f);
-		verts[11] = new Vector3(0.2f, 0, 1);
+		Verts[8] = new Vector3(0, 0, 0.6f);
+		Verts[9] = new Vector3(0, 0, 1);
+		Verts[10] = new Vector3(0.2f, 0, 0.6f);
+		Verts[11] = new Vector3(0.2f, 0, 1);
 
-		verts[12] = new Vector3(0.2f, 0, 0.8f);
-		verts[13] = new Vector3(0.2f, 0, 1);
-		verts[14] = new Vector3(0.4f, 0, 0.8f);
-		verts[15] = new Vector3(0.4f, 0, 1);
+		Verts[12] = new Vector3(0.2f, 0, 0.8f);
+		Verts[13] = new Vector3(0.2f, 0, 1);
+		Verts[14] = new Vector3(0.4f, 0, 0.8f);
+		Verts[15] = new Vector3(0.4f, 0, 1);
 
-		verts[16] = new Vector3(0.6f, 0, 0);
-		verts[17] = new Vector3(0.6f, 0, 0.2f);
-		verts[18] = new Vector3(1, 0, 0);
-		verts[19] = new Vector3(1, 0, 0.2f);
+		Verts[16] = new Vector3(0.6f, 0, 0);
+		Verts[17] = new Vector3(0.6f, 0, 0.2f);
+		Verts[18] = new Vector3(1, 0, 0);
+		Verts[19] = new Vector3(1, 0, 0.2f);
 
-		verts[20] = new Vector3(0.8f, 0, 0.2f);
-		verts[21] = new Vector3(0.8f, 0, 0.4f);
-		verts[22] = new Vector3(1, 0, 0.2f);
-		verts[23] = new Vector3(1, 0, 0.4f);
+		Verts[20] = new Vector3(0.8f, 0, 0.2f);
+		Verts[21] = new Vector3(0.8f, 0, 0.4f);
+		Verts[22] = new Vector3(1, 0, 0.2f);
+		Verts[23] = new Vector3(1, 0, 0.4f);
 
-		verts[24] = new Vector3(0.6f, 0, 0.8f);
-		verts[25] = new Vector3(0.6f, 0, 1);
-		verts[26] = new Vector3(0.8f, 0, 0.8f);
-		verts[27] = new Vector3(0.8f, 0, 1);
+		Verts[24] = new Vector3(0.6f, 0, 0.8f);
+		Verts[25] = new Vector3(0.6f, 0, 1);
+		Verts[26] = new Vector3(0.8f, 0, 0.8f);
+		Verts[27] = new Vector3(0.8f, 0, 1);
 
-		verts[28] = new Vector3(0.8f, 0, 0.6f);
-		verts[29] = new Vector3(0.8f, 0, 1);
-		verts[30] = new Vector3(1, 0, 0.6f);
-		verts[31] = new Vector3(1, 0, 1);
+		Verts[28] = new Vector3(0.8f, 0, 0.6f);
+		Verts[29] = new Vector3(0.8f, 0, 1);
+		Verts[30] = new Vector3(1, 0, 0.6f);
+		Verts[31] = new Vector3(1, 0, 1);
 
-		int num_tris = 16;
-		tris = new int[num_tris * 3]; // need 3 vertices per triangle
+		int num_Tris = 16;
+		Tris = new int[num_Tris * 3]; // need 3 vertices per triangle
 
 		// make the rectangles from vertices
 		MakeQuad(0, 1, 2, 3);
@@ -243,8 +220,8 @@ public class CreateGrid : MonoBehaviour {
 		MakeQuad(28, 29, 30, 31);
 
 		// save the vertices and triangles in the mesh object
-		mesh.vertices = verts;
-		mesh.triangles = tris;
+		mesh.vertices = Verts;
+		mesh.triangles = Tris;
 
 		// automatically calculate the vertex normals
 		mesh.RecalculateNormals();
@@ -255,12 +232,12 @@ public class CreateGrid : MonoBehaviour {
 	// Make a triangle from three vertex indices (clockwise order)
 	void MakeTri(int i1, int i2, int i3) {
 		// figure out the base index for storing triangle indices
-		int index = ntris * 3;
-		ntris++;
+		int index = Ntris * 3;
+		Ntris++;
 
-		tris[index] = i1;
-		tris[index + 1] = i2;
-		tris[index + 2] = i3;
+		Tris[index] = i1;
+		Tris[index + 1] = i2;
+		Tris[index + 2] = i3;
 	}
 
 	// Make a quadrilateral from four vertex indices (clockwise order)

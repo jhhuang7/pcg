@@ -1,107 +1,136 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using cg = CreateGrid;
 
 public class Flocking : MonoBehaviour {
-    // Booleans that allow user to toggle the four forces individually
-    public bool flock_centering = true;
-    public bool velocity_matching = true;
-    public bool collision_avoidance = true;
-    public bool wandering = true;
+    // Booleans that allow user to toggle the four Forces individually
+    public bool FlockCentering = true;
+    public bool VelocityMatching = true;
+    public bool CollisionAvoidance = true;
+    public bool Wandering = true;
+    public bool Trail = true;
 
-    // User-editable number of creatures
+    // User-editable number of Creatures
     public int NumCreatures = MinCreatues;
     private static int MinCreatues = 30;
-    private static int MaxCreatues = 100;
+    private static int MaxCreatues = cg.Columns + cg.Rows;
 
-    // Flocking Objects
-    public GameObject bird;
-    public GameObject bird1;
-    public Material gold;
-    public bool trail = true;
+    // Flocking Objects and Materials
+    public GameObject Bird;
+    public GameObject Bird1;
+    public Material Gold;
+    public Material Transparent;
+    public Material Ground;
     
     // Creature information
-    private GameObject[] creatures;
-    private Vector3[] velocities;
-    private Vector3[] forces;
+    private GameObject[] Creatures;
+    private Vector3[] Velocities;
+    private Vector3[] Forces;
 
-    // Clamp the creature velocities to some reasonable range
-    private static float min_v = -1f;
-    private static float max_v = 1f;
+    // Clamp the creature Velocities to some reasonable range
+    private static float MinV = -1f;
+    private static float MaxV = 1f;
 
-    // Keep all the creatures confined to World Box (50 by 10 by 50)
-    private static float min_x = -25f;
-    private static float max_x = 25f ;
-    private static float min_y = -5f;
-    private static float max_y = 5f;
-    private static float min_z = -25f;
-    private static float max_z = 25f;
+    // Keep all the Creatures confined to World Box (defined in CreateGrid)
+    private static float MinX = 5f;
+    private static float MaxX = (float)cg.Columns - 5f;
+    private static float MinY = 1.5f;
+    private static float MaxY = 4.5f;
+    private static float MinZ = 5f;
+    private static float MaxZ = (float)cg.Rows - 5f;
 
-    // Random seed
-    private int seed = 4803;
+    // Random Seed
+    private int Seed = 4803;
 
     // Start is called before the first frame update
     void Start() {
+        WorldBox();
         Init();
+    }
+
+    // Make a World Box, so city and flocking is "under the dome"
+    void WorldBox() {
+        GameObject dome = new GameObject("Dome");
+
+        GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        box.name = "World Box";
+        box.transform.position 
+            = new Vector3(cg.Columns / 2 - 0.5f, 2.5f, cg.Rows / 2 - 0.5f);
+        box.transform.localScale = new Vector3(cg.Columns, 5f, cg.Rows);
+        Renderer rnd = box.GetComponent<Renderer>();
+        rnd.material = Transparent;
+        box.transform.parent = dome.transform;
+
+        GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        ground.name = "Ground";
+        ground.transform.position 
+            = new Vector3(cg.Columns / 2 - 0.5f, 0, cg.Rows / 2 - 0.5f);
+        ground.transform.Rotate(180f, 0f, 0f);
+        ground.transform.localScale 
+            = new Vector3(cg.Columns * 0.1f, 1f, cg.Rows * 0.1f);
+        Renderer rend = ground.GetComponent<Renderer>();
+        rend.material = Ground;
+        ground.transform.parent = dome.transform;
     }
 
     // Initializes all variables needed for flocking simulation
     void Init() {
-        Random.InitState(seed);
+        Random.InitState(Seed);
 
-        creatures = new GameObject[MaxCreatues];
+        Creatures = new GameObject[MaxCreatues];
         float scale = 1f;
 
         for (int i = 0; i < MaxCreatues; i++) {
             float chance = Random.Range(0f, 1f);
             if (chance >= 0.5f) {
-                creatures[i] = (GameObject) Instantiate(bird);
+                Creatures[i] = (GameObject)Instantiate(Bird);
                 scale = 0.2f;
             } else {
-                creatures[i] = (GameObject) Instantiate(bird1);
+                Creatures[i] = (GameObject)Instantiate(Bird1);
                 scale = 0.5f;
             }
 
-            creatures[i].transform.position = new Vector3(Random.Range(min_x, 
-                max_x), Random.Range(min_y, max_y), Random.Range(min_z, max_z));
-            creatures[i].transform.localScale 
+            Creatures[i].transform.position = new Vector3(Random.Range(MinX, 
+                MaxX), Random.Range(MinY, MaxY), Random.Range(MinZ, MaxZ));
+            Creatures[i].transform.localScale 
                 = new Vector3(scale, scale, scale);
 
-            var tr = creatures[i].AddComponent<TrailRenderer>();
+            var tr = Creatures[i].AddComponent<TrailRenderer>();
             tr.startWidth = 0.1f;
             tr.endWidth = 0.05f;
             tr.time = 5f;
-            tr.material = gold;
+            tr.material = Gold;
             tr.enabled = false;
 
             if (i >= NumCreatures) {
-                creatures[i].SetActive(false);
+                Creatures[i].SetActive(false);
             }
         }
 
-        velocities = new Vector3[MaxCreatues];
+        Velocities = new Vector3[MaxCreatues];
         for (int i = 0; i < MaxCreatues; i++) {
-            velocities[i] = new Vector3(Random.Range(min_v, max_v), 
-                Random.Range(min_v, max_v), Random.Range(min_v, max_v));
+            Velocities[i] = new Vector3(Random.Range(MinV, MaxV), 
+                Random.Range(MinV, MaxV), Random.Range(MinV, MaxV));
         }
 
-        forces = new Vector3[MaxCreatues];
+        Forces = new Vector3[MaxCreatues];
         for (int i = 0; i < MaxCreatues; i++) {
-            forces[i] = new Vector3(0f, 0f, 0f);
+            Forces[i] = new Vector3(0f, 0f, 0f);
         }
     }
 
-    // Leaves a gold line trail for a given boid
-    void Leave_Trail(int i) {
-        if (trail) {
-            creatures[i].GetComponent<TrailRenderer>().enabled = true;
+    // Leaves a Gold line Trail for a given boid
+    void LeaveTrail(int i) {
+        if (Trail) {
+            Creatures[i].GetComponent<TrailRenderer>().enabled = true;
         } else {
-            creatures[i].GetComponent<TrailRenderer>().enabled = false;
+            Creatures[i].GetComponent<TrailRenderer>().enabled = false;
         }
     }
 
     // Creatures should never exceed high value and fall below low value
-    void Limit_Creatures() {
+    void LimitCreatures() {
         if (NumCreatures < MinCreatues) {
             NumCreatures = MinCreatues;
         } else if (NumCreatures > MaxCreatues) {
@@ -110,13 +139,13 @@ public class Flocking : MonoBehaviour {
     }
 
     // When the user presses the space bar, 
-    // cause the creatures to scatter to random locations in the World Box
-    void Space_Press() {
+    // cause the Creatures to scatter to random locations in the World Box
+    void SpacePress() {
         if (Input.GetKeyDown("space")) {
             for (int i = 0; i < NumCreatures; i++) {
-                creatures[i].transform.position = new Vector3(Random.
-                    Range(min_x, max_x), Random.Range(min_y, max_y), 
-                    Random.Range(min_z, max_z));
+                Creatures[i].transform.position = new Vector3(Random.
+                    Range(MinX, MaxX), Random.Range(MinY, MaxY), 
+                    Random.Range(MinZ, MaxZ));
             }
         }
     }
@@ -155,18 +184,18 @@ public class Flocking : MonoBehaviour {
     }
 
     // Calculates the flock centering force of given boid
-    Vector3 Flock_Centering_Force(int i) {
+    Vector3 FlockCenteringForce(int i) {
         Vector3 ffc = new Vector3(0f, 0f, 0f);
 
-        if (!flock_centering) {
+        if (!FlockCentering) {
             return ffc;
         }
 
         float rfc = 5.5f;
-        Vector3 p = creatures[i].transform.position;
+        Vector3 p = Creatures[i].transform.position;
 
         for (int j = 0; j < NumCreatures; j++) {
-            Vector3 pj = creatures[j].transform.position;
+            Vector3 pj = Creatures[j].transform.position;
 
             if (j != i && Distance(p, pj) <= rfc) {
                 ffc += Weight(p, pj, rfc) * (pj - p) / Weight(p, pj, rfc);
@@ -177,18 +206,18 @@ public class Flocking : MonoBehaviour {
     }
     
     // Calculates the collision avoidance force of given boid
-    Vector3 Collision_Avoidance_Force(int i) {
+    Vector3 CollisionAvoidanceForce(int i) {
         Vector3 fca = new Vector3(0f, 0f, 0f);
 
-        if (!collision_avoidance) {
+        if (!CollisionAvoidance) {
             return fca;
         }
 
         float rca = 5f;
-        Vector3 p = creatures[i].transform.position;
+        Vector3 p = Creatures[i].transform.position;
 
         for (int j = 0; j < NumCreatures; j++) {
-            Vector3 pj = creatures[j].transform.position;
+            Vector3 pj = Creatures[j].transform.position;
             if (j != i && Distance(p, pj) <= rca) {
                 fca += Weight(p, pj, rca) * (p - pj);
             }
@@ -198,20 +227,20 @@ public class Flocking : MonoBehaviour {
     }
 
     // Calculates the velocity matching force of given boid
-    Vector3 Velocity_Matching_Force(int i) {
+    Vector3 VelocityMatchingForce(int i) {
         Vector3 fvm = new Vector3(0f, 0f, 0f);
 
-        if (!velocity_matching) {
+        if (!VelocityMatching) {
             return fvm;
         }
 
         float rvm = 5.4f;
-        Vector3 p = creatures[i].transform.position;
-        Vector3 v = velocities[i];
+        Vector3 p = Creatures[i].transform.position;
+        Vector3 v = Velocities[i];
 
         for (int j = 0; j < NumCreatures; j++) {
-            Vector3 pj = creatures[j].transform.position;
-            Vector3 vj = velocities[j];
+            Vector3 pj = Creatures[j].transform.position;
+            Vector3 vj = Velocities[j];
             
             if (j != i && Distance(p, pj) <= rvm) {
                 fvm += Weight(p, pj, rvm) * (vj - v);
@@ -222,21 +251,21 @@ public class Flocking : MonoBehaviour {
     }
 
     // Calculates the flock centering force of given boid
-    Vector3 Wandering_Force(int i) {
+    Vector3 WanderingForce(int i) {
         Vector3 fw = new Vector3(0f, 0f, 0f);
 
-        if (!wandering) {
+        if (!Wandering) {
             return fw;
         }
 
-        fw += new Vector3(Random.Range(min_y, max_y), 
-            Random.Range(min_y, max_y), Random.Range(min_y, max_y));
+        fw += new Vector3(Random.Range(MinY, MaxY), 
+            Random.Range(MinY, MaxY), Random.Range(MinY, MaxY));
 
         return fw;
     }
 
-    // Calculates sum of all forces and store with boid
-    void Calculate_Forces(int i) {
+    // Calculates sum of all Forces and store with boid
+    void CalculateForces(int i) {
         // Weights for each force are scalars of choice
         float wfc = 0.3f;
         float wvm = 0.3f;
@@ -244,51 +273,51 @@ public class Flocking : MonoBehaviour {
         float ww = 0.15f;
 
         // fall
-        forces[i] = wfc * Flock_Centering_Force(i) + 
-            wvm * Velocity_Matching_Force(i) + 
-            wca * Collision_Avoidance_Force(i) +
-            ww * Wandering_Force(i);
+        Forces[i] = wfc * FlockCenteringForce(i) + 
+            wvm * VelocityMatchingForce(i) + 
+            wca * CollisionAvoidanceForce(i) +
+            ww * WanderingForce(i);
     }
 
     // Updated positions of boids based on new velocity
     void Simulation() {
         for (int i = 0; i < MaxCreatues; i++) {
             if (i < NumCreatures) {
-                creatures[i].SetActive(true);
-                Calculate_Forces(i);
-                Leave_Trail(i);
+                Creatures[i].SetActive(true);
+                CalculateForces(i);
+                LeaveTrail(i);
             } else {
-                creatures[i].SetActive(false);
+                Creatures[i].SetActive(false);
             }
         }
 
         for (int j = 0; j < NumCreatures; j++) {
-            Vector3 v = velocities[j];
-            velocities[j] += Time.deltaTime * forces[j];
-            velocities[j] = Vector3.ClampMagnitude(velocities[j], max_v);
-            creatures[j].transform.position += Time.deltaTime * 
-                ((v + velocities[j]) / 2f);
+            Vector3 v = Velocities[j];
+            Velocities[j] += Time.deltaTime * Forces[j];
+            Velocities[j] = Vector3.ClampMagnitude(Velocities[j], MaxV);
+            Creatures[j].transform.position += Time.deltaTime * 
+                ((v + Velocities[j]) / 2f);
             
             // Make sure creatues don't go out of bounds
-            float x = creatures[j].transform.position[0];
-            float y = creatures[j].transform.position[1];
-            float z = creatures[j].transform.position[2];
-            if (x <= min_x || x >= max_x) {
-                velocities[j][0] *= -1;
+            float x = Creatures[j].transform.position[0];
+            float y = Creatures[j].transform.position[1];
+            float z = Creatures[j].transform.position[2];
+            if (x <= MinX || x >= MaxX) {
+                Velocities[j][0] *= -1;
             } 
-            if (y <= min_y || y >= max_y) {
-                velocities[j][1] *= -1;
+            if (y <= MinY || y >= MaxY) {
+                Velocities[j][1] *= -1;
             } 
-            if (z <= min_x || z >= max_z) {
-                velocities[j][2] *= -1;
+            if (z <= MinX || z >= MaxZ) {
+                Velocities[j][2] *= -1;
             }
         }
     }
     
     // Update is called once per frame
     void Update() {
-        Limit_Creatures();
+        LimitCreatures();
         Simulation();
-        Space_Press();
+        SpacePress();
     }
 }
