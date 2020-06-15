@@ -248,6 +248,6 @@ public class CreateGrid : MonoBehaviour {
 
     // Update is called once per frame
 	void Update () {
-		
+		return;
 	}
 }

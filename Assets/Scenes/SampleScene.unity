@@ -412,7 +412,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564478644}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b5cb90b5b9d54836ca687288e8bfcbf2, type: 3}
   m_Name: 
@@ -461,11 +461,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9813a3b49a29d967a22756f6ea9cacf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flock_centering: 1
-  velocity_matching: 1
-  collision_avoidance: 1
-  wandering: 1
-  trail: 1
+  FlockCentering: 1
+  VelocityMatching: 1
+  CollisionAvoidance: 1
+  Wandering: 1
+  Trail: 1
   NumCreatures: 30
   Bird: {fileID: 8863775147154780544, guid: 97979a60aab97e7f1a6521d936a62f17, type: 3}
   Bird1: {fileID: 7792690192041231573, guid: 59773e4568b2042ccbd7bc624ec3ec32, type: 3}

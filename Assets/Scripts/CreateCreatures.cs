@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using cg = CreateGrid;
 
 public class CreateCreatures : MonoBehaviour {
     // Master random seed so that a user can create different creatures.
@@ -8,6 +9,7 @@ public class CreateCreatures : MonoBehaviour {
 
     // Number of creatures to be generated
     public int NumCreatures = 5;
+    private GameObject[] Birds;
 
     // The vertices of the mesh
 	private static Vector3[] Verts;
@@ -22,8 +24,36 @@ public class CreateCreatures : MonoBehaviour {
     void Start() {
         Random.InitState(Seed);
 
-        for (int i = 0; i < NumCreatures; i++) {
-            BuildCreature(i);
+        LimitCreatures();
+        Birds = new GameObject[NumCreatures];
+
+        int k = 0;
+        for (int i = 0; i < cg.Columns; i++) {
+            if (k == NumCreatures) {
+                return;
+            }
+
+            for (int j = 0; j < cg.Rows; j++) {
+                if (k == NumCreatures) {
+                    return;
+                }
+
+                if (cg.Grid[i, j] == 1 && i % 4 == 0 && j % 3 == 1 &&  i > 5 && 
+                        j > 5 && i < cg.Columns - 5 && j < cg.Rows - 5) {
+                    Birds[k] = BuildCreature(k);
+                    Birds[k].transform.position = new Vector3(i, 0.2f, j); 
+                    k++;
+                }
+            }
+        }
+    }
+
+    // Creatures should never exceed high value and fall below low value
+    void LimitCreatures() {
+        if (NumCreatures < 5) {
+            NumCreatures = 5;
+        } else if (NumCreatures > 10) {
+            NumCreatures = 10;
         }
     }
 
@@ -31,10 +61,9 @@ public class CreateCreatures : MonoBehaviour {
     GameObject BuildCreature(int i) {
         int rand = Random.Range(i + 1, i + 10); // used for position and color
         float chance = Random.Range(0f, 1f); // Bless the RNG!
-        float size = chance * rand; // for size variation
+        float size = Random.Range(0.3f, 1.5f); // for size variation
 
         GameObject bird = new GameObject("Bird2");
-        bird.transform.position = new Vector3(0f, 0f, 0f); 
 
         MakeHead(rand, size, bird); // Beaks swappable
         MakeBody(rand, size, bird);
@@ -795,6 +824,6 @@ public class CreateCreatures : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        
+        return;
     } 
 }
