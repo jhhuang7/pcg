@@ -27,6 +27,7 @@ public class CreateCreatures : MonoBehaviour {
         LimitCreatures();
         Birds = new GameObject[NumCreatures];
 
+        // Generate birds
         int k = 0;
         for (int i = 0; i < cg.Columns; i++) {
             if (k == NumCreatures) {
@@ -160,8 +161,7 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Creates an eye in the shape of two merged spheres
-    void CreateEye(int rand, int side, float size, 
-            GameObject bird) {
+    void CreateEye(int rand, int side, float size, GameObject bird) {
         float shift; // determines right of left eye
         if (side == 1) {
             shift = 0.2f;
@@ -251,7 +251,7 @@ public class CreateCreatures : MonoBehaviour {
         return (mesh);
     }
 
-    // Create a tetrahedron style for beak variation 2.
+    // Create a tetrahedron style for beak variation 2
 	Mesh CreateBeak2() {
 		// create a mesh object
 		Mesh mesh = new Mesh();
@@ -532,8 +532,7 @@ public class CreateCreatures : MonoBehaviour {
         tailtb.transform.parent = bird.transform;
     }
 
-    // Generates the variation 2 of creature's tail made of a BEST attempted
-    // subdivision mesh
+    // Generates the variation 2 of creature's tail using a subdivision mesh
     void MakeTail2(int rand, float size, GameObject bird) {
         GameObject tl = new GameObject("Tail");
         tl.transform.position = size * 
@@ -559,8 +558,7 @@ public class CreateCreatures : MonoBehaviour {
         tl.transform.parent = bird.transform;
     }
 
-    // Creates the basis tail mesh that's two squared based pyramids 
-    // on top of each other
+    // Creates the basis tail mesh that's two squared based pyramids
     Mesh CreateTail2Mesh() {
         Mesh mesh = new Mesh();
 
@@ -731,7 +729,6 @@ public class CreateCreatures : MonoBehaviour {
     }
 
     // Applies loop subdivision to given mesh
-    // Couldn't fully fix bugs to achieve proper subdivision :(
     Mesh SubDivision(Mesh mesh) {
         // Get adjacencies
         int[] G = Geometry_Table(mesh);
@@ -760,13 +757,13 @@ public class CreateCreatures : MonoBehaviour {
             Vector3 e3 = 3 / 8f * (p3 + p1) + 1 / 8f * (p3o + p1o);
 
             // Put new vertices into array
-            Verts[i++] = p1; // NewEvenVert(p1, V, mesh); 
+            Verts[i++] = p1;
             Verts[i++] = e1;
             Verts[i++] = e3;
-            Verts[i++] = p2; // NewEvenVert(p2, V, mesh);
+            Verts[i++] = p2;
             Verts[i++] = e2;
             Verts[i++] = e1;
-            Verts[i++] = p3; // NewEvenVert(p3, V, mesh);
+            Verts[i++] = p3;
             Verts[i++] = e3;
             Verts[i++] = e2;
             Verts[i++] = e1;

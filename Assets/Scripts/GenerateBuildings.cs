@@ -32,7 +32,11 @@ public class GenerateBuildings : MonoBehaviour {
     void Start() {
         Random.InitState(Seed);
         
-        // Place buildings in city
+        PlaceBuildings();
+    }
+
+    // Place buildings in city
+    void PlaceBuildings() {
         for (int i = 0; i < cg.Columns; i++) {
             for (int j = 0; j < cg.Rows; j++) {
                 if (cg.Grid[i, j] == 0 && (i == 6 || i == cg.Columns - 6) && 
